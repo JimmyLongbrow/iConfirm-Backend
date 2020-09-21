@@ -47,18 +47,18 @@ const schema = buildSchema(`
     employee(id: String): Employee,
     employees(
       employeeType: String,
-      profilePic: Text,
+      profilePic: String,
       name: String,
       phone: String,
       email: String,
       securityLicStatus: Boolean,
       rsaLicStatus: Boolean,
-      firstAidExp: Date
+      firstAidExp: String
     ): [Employee],
 
     venue(id: String): Venue,
     venues(
-      logo: Text,
+      logo: String,
       name: String,
       address: String,
       phone: String,
@@ -67,7 +67,7 @@ const schema = buildSchema(`
       liquorLicNo: String,
       liquorLicStatus: Boolean,
       masterLicNo: String,
-      masterLicExp: Date,
+      masterLicExp: String,
       masterLicStatus: Boolean,
       membershipDate: Datetime
     ): [Venue],
@@ -93,14 +93,14 @@ const schema = buildSchema(`
 
   type Employee {
     employeeType: String,
-    profilePic: Text,
+    profilePic: String,
     name: String,
     shifts: [Shift],
     dob: Date,
     address: String,
     phone: String,
     email: String,
-    passwordDigest: Text,
+    passwordDigest: String,
     emergencyContactName: String,
     emergencyContactPhone: String,
     securityLicNo: String,
@@ -130,7 +130,7 @@ const schema = buildSchema(`
   },
 
   type Venue {
-    logo: Text,
+    logo: String,
     name: String,
     address: String,
     phone: String,
@@ -388,4 +388,3 @@ app.use( (err, req, res, next) => {
 // curl -XPOST -d '{"email":"one@one.com", "password":"chicken"}' http://localhost:1337/login -H 'content-type: application/json'
 
 // How to mark certain routes as logged-in only?
->>>>>>> 0faa038de55555c28e18543a098c1695988c9933

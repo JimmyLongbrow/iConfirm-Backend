@@ -2,14 +2,17 @@ const mongoose = require('mongoose');
 
 const employeeSchema = new mongoose.Schema({
   employeeType: String,
-  profilePic: Text,
+  profilePic: String,
   name: String,
-  shifts: [Shift],
+  shifts:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Shift'
+  },
   dob: Date,
   address: String,
   phone: String,
   email: String,
-  passwordDigest: Text,
+  passwordDigest: String,
   emergencyContactName: String,
   emergencyContactPhone: String,
   securityLicNo: String,
