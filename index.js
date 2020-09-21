@@ -1,16 +1,8 @@
 // DB init
-
-const { MongoClient, ObjectId } = require('mongodb');
-let db;
-
-MongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser:true, useUnifiedTopology: true}, (err, client) => {
-
-  if(err) return console.log(err);
-
-  db = client.db('iconfirm') //success!
-  console.log('Connected, using db: iconfirm');
-
-}); //connect()
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://127.0.0.1:27017/iconfirm', {useNewUrlParser: true, useUnifiedTopology: true});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 
 const bcrypt = require('bcrypt');
