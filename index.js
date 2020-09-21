@@ -1,20 +1,5 @@
 // DB init
 
-<<<<<<< HEAD
-const { MongoClient, ObjectId } = require('mongodb');
-let db;
-
-MongoClient.connect('mongodb://127.0.0.1:27017', {userNewUrlParser:true, useUnifiedTopology:true}, (err, client) => {
-
-  if(err) return console.log( err );
-
-  db = client.db('iconfirm') // success!
-  console.log('Connected, using db: iconfirm');
-
-}); // connect()
-=======
-//---------------------------
-
 const { MongoClient, ObjectId } = require('mongodb');
 let db;
 
@@ -27,9 +12,6 @@ MongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser:true, useUnifi
 
 }); //connect()
 
-
-//----------------------
->>>>>>> 0faa038de55555c28e18543a098c1695988c9933
 
 const bcrypt = require('bcrypt');
 
@@ -45,8 +27,6 @@ const checkAuth = () => {
 };
 
 console.log(process.env.SERVER_SECRET_KEY);
-<<<<<<< HEAD
-=======
 
 
 const express = require('express');
@@ -116,7 +96,7 @@ const schema = buildSchema(`
     profilePic: Text,
     name: String,
     shifts: [Shift],
-    dob: date,
+    dob: Date,
     address: String,
     phone: String,
     email: String,
@@ -336,7 +316,7 @@ app.post('/shifts', (req, res) => {
       });
 
     }
-    
+
   );
 
 }); // POST /shifts
