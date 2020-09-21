@@ -5,7 +5,7 @@ let db;
 
 MongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser:true, useUnifiedTopology: true}, (err, client) => {
 
-  if(err) return console.log( err );
+  if(err) return console.log(err);
 
   db = client.db('iconfirm') //success!
   console.log('Connected, using db: iconfirm');

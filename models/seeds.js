@@ -5,7 +5,7 @@ const Venue = require('../models/Venue');
 // const Shift = require('../models/Shift');
 const bcrypt = require('bcrypt');
 
-mongoose.connect('mongodb://localhost/ic', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://127.0.0.1:27017/iconfirm', {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
