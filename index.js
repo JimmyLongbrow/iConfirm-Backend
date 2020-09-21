@@ -19,6 +19,7 @@ const jwt = require('jsonwebtoken');
 
 const jwtAunthenticate = require('express-jwt');
 
+const SERVER_SECRET_KEY = ('process.env.SERVER_SECRET_KEY');
 const checkAuth = () => {
   return jwtAunthenticate({
     secret: SERVER_SECRET_KEY,
@@ -26,7 +27,6 @@ const checkAuth = () => {
   });
 };
 
-console.log(process.env.SERVER_SECRET_KEY);
 
 
 const express = require('express');
@@ -69,23 +69,23 @@ const schema = buildSchema(`
       masterLicNo: String,
       masterLicExp: String,
       masterLicStatus: Boolean,
-      membershipDate: Datetime
+      membershipDate: Int
     ): [Venue],
 
     roster(id: String): Roster,
     rosters(
-      date: Datetime,
-      venueId: Integer,
+      date: Int,
+      venueId: Int,
       employeeType: String
     ): [Roster],
 
     shift(id: String): Shift,
     shifts(
-      date: Date,
-      clockOnDate: Date,
-      clockOffDate: Date,
-      employeeId: Integer,
-      rosterId: Integer,
+      date: Int,
+      clockOnDate: Int,
+      clockOffDate: Int,
+      employeeId: Int,
+      rosterId: Int,
       shiftConfirmed: Boolean
     ): [Shift],
   },
@@ -96,7 +96,7 @@ const schema = buildSchema(`
     profilePic: String,
     name: String,
     shifts: [Shift],
-    dob: Date,
+    dob: Int,
     address: String,
     phone: String,
     email: String,
@@ -107,24 +107,24 @@ const schema = buildSchema(`
     securityLicStatus: Boolean,
     rsaNo: String,
     rsaLicStatus: Boolean,
-    firstAidExp: Date
+    firstAidExp: Int
   },
 
   type Roster {
-    date: Datetime,
-    venueId: Integer,
+    date: Int,
+    venueId: Int,
     venue: Venue,
     shifts: [Shift],
     employeeType: String
   },
 
   type Shift {
-    date: Date,
-    clockOnDate: Date,
-    clockOffDate: Date,
-    employeeId: Integer,
+    date: Int,
+    clockOnDate: Int,
+    clockOffDate: Int,
+    employeeId: Int,
     employee: Employee,
-    rosterId: Integer,
+    rosterId: Int,
     roster: Roster,
     shiftConfirmed: Boolean
   },
@@ -139,9 +139,9 @@ const schema = buildSchema(`
     liquorLicNo: String,
     liquorLicStatus: Boolean,
     masterLicNo: String,
-    masterLicExp: Date,
+    masterLicExp: Int,
     masterLicStatus: Boolean,
-    membershipDate: Datetime
+    membershipDate: Int
   }
 `);
 
