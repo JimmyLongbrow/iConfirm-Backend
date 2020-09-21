@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Roster = require('../models/Roster');
-// const Employee = require('../models/Employee');
+const Employee = require('../models/Employee');
 const Venue = require('../models/Venue');
-// const Shift = require('../models/Shift');
+const Shift = require('../models/Shift');
 const bcrypt = require('bcrypt');
 
 mongoose.connect('mongodb://127.0.0.1:27017/iconfirm', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -13,14 +13,14 @@ db.once('open', async () => {
 
   // empty the collections first
   await Venue.deleteMany({});
-  // await Employee.deleteMany({});
+  await Employee.deleteMany({});
   await Roster.deleteMany({});
-  // await Shift.deleteMany({});
+  await Shift.deleteMany({});
 
   const venues = await seedVenues();
   const rosters = await seedRosters(venues);
-  // const employees = await seedEmployees();
-  // const shifts = await seedShifts();
+  const employees = await seedEmployees();
+  const shifts = await seedShifts(employees, rosters);
 
   // Now that we have created rosters & employees, we can pass them
   // in to our shift function to share the IDs between them.
@@ -31,10 +31,10 @@ db.once('open', async () => {
 
   await printReport();
 
-  // console.log(`Created ${ employees.length } Employees.`);
+  console.log(`Created ${ employees.length } Employees.`);
   console.log(`Created ${ rosters.length } Rosters.`);
   console.log(`Created ${ venues.length } Venues.`);
-  // console.log(`Created ${ shifts.length } Rosters.`);
+  console.log(`Created ${ shifts.length } Rosters.`);
   console.log('Done.');
   process.exit(0); // Finished!
 
@@ -120,7 +120,6 @@ const seedRosters = async (venues) => {
   }
 
 }; // seedRosters
-
 
 const seedEmployees = async () => {
 
@@ -317,98 +316,114 @@ const seedEmployees = async () => {
 
 }; // seedEmployees
 
-
 const seedShifts = async (rosters, employees) => {
 
-  // Shorthand access to all the rosters & employees:
-  const [f1, f2, f3] = rosters;
-  const [u1, u2, u3] = employees;
+  try {
 
-  // Create shifts in Employee docs
-
-  const u1Updated = await u1.updateOne({
-    shifts: [
-      {row: 1, col: 1, roster: f1._id },
-      {row: 1, col: 2, roster: f1._id },
-      {row: 1, col: 1, roster: f2._id },
-      {row: 1, col: 2, roster: f2._id },
-      {row: 1, col: 1, roster: f3._id },
-      {row: 1, col: 2, roster: f3._id },
-    ]
-  });
-
-  const u2Updated = await u2.updateOne({
-    shifts: [
-      { row: 2, col: 1, roster: f1._id },
-      { row: 2, col: 2, roster: f1._id },
-      { row: 2, col: 1, roster: f2._id },
-      { row: 2, col: 2, roster: f2._id },
-      { row: 2, col: 1, roster: f3._id },
-      { row: 2, col: 2, roster: f3._id },
-    ]
-  });
-
-  const u3Updated = await u3.updateOne({
-    shifts: [
-      { row: 3, col: 1, roster: f1._id },
-      { row: 3, col: 2, roster: f1._id },
-      { row: 3, col: 1, roster: f2._id },
-      { row: 3, col: 2, roster: f2._id },
-      { row: 3, col: 1, roster: f3._id },
-      { row: 3, col: 2, roster: f3._id },
-    ]
-  });
-
-  // Now, since we're "denormalizing" some of this data,
-  // i.e. duplicating some of the same information across
-  // different collections (here, the Roster doc stores some
-  // shift info: the row, column, & employee, as well
-  // as the Employee doc storing that info), we have to update
-  // each Roster with shift info from the employees.
+    return await Shift.create([
+      {
+        date: '2020-10-01T10:30:00',
+        clockOnDate: '2020-10-01T18:00:00',
+        clockOffDate: '2020-10-02T02:30:00',
+        employeeId: employees[0]._id,
+        employee: employees[0].name,
+        rosterId: rosters[0]._id,
+        shiftConfirmed: true
+      }
+    ]);
+  } catch( err ){
+      console.warn( 'Error creating shifts:', err );
+      process.exit(1);
+  }
+  // // Shorthand access to all the rosters & employees:
+  // const [f1, f2, f3] = rosters;
+  // const [u1, u2, u3] = employees;
   //
-  // This is a lot more work to do during the creation
-  // of these documents (and the editing), but the payoff is
-  // that when we load a Roster, we have all the shift
-  // info we need to draw the all-important seating diagram,
-  // without needing to also query the Employee collection.
+  // // Create shifts in Employee docs
+  //
+  // const u1Updated = await u1.updateOne({
+  //   shifts: [
+  //     {row: 1, col: 1, roster: f1._id },
+  //     {row: 1, col: 2, roster: f1._id },
+  //     {row: 1, col: 1, roster: f2._id },
+  //     {row: 1, col: 2, roster: f2._id },
+  //     {row: 1, col: 1, roster: f3._id },
+  //     {row: 1, col: 2, roster: f3._id },
+  //   ]
+  // });
+  //
+  // const u2Updated = await u2.updateOne({
+  //   shifts: [
+  //     { row: 2, col: 1, roster: f1._id },
+  //     { row: 2, col: 2, roster: f1._id },
+  //     { row: 2, col: 1, roster: f2._id },
+  //     { row: 2, col: 2, roster: f2._id },
+  //     { row: 2, col: 1, roster: f3._id },
+  //     { row: 2, col: 2, roster: f3._id },
+  //   ]
+  // });
+  //
+  // const u3Updated = await u3.updateOne({
+  //   shifts: [
+  //     { row: 3, col: 1, roster: f1._id },
+  //     { row: 3, col: 2, roster: f1._id },
+  //     { row: 3, col: 1, roster: f2._id },
+  //     { row: 3, col: 2, roster: f2._id },
+  //     { row: 3, col: 1, roster: f3._id },
+  //     { row: 3, col: 2, roster: f3._id },
+  //   ]
+  // });
+  //
+  // // Now, since we're "denormalizing" some of this data,
+  // // i.e. duplicating some of the same information across
+  // // different collections (here, the Roster doc stores some
+  // // shift info: the row, column, & employee, as well
+  // // as the Employee doc storing that info), we have to update
+  // // each Roster with shift info from the employees.
+  // //
+  // // This is a lot more work to do during the creation
+  // // of these documents (and the editing), but the payoff is
+  // // that when we load a Roster, we have all the shift
+  // // info we need to draw the all-important seating diagram,
+  // // without needing to also query the Employee collection.
+  //
+  // const f1Updated = await f1.updateOne({ $push: {
+  //   shifts: [
+  //     { row: 1, col: 1, employee: u1._id },
+  //     { row: 1, col: 2, employee: u1._id },
+  //     { row: 2, col: 1, employee: u2._id },
+  //     { row: 2, col: 2, employee: u2._id },
+  //     { row: 3, col: 1, employee: u3._id },
+  //     { row: 3, col: 2, employee: u3._id },
+  //   ]
+  // }});
+  //
+  // const f2Updated = await f2.updateOne({ $push: {
+  //   shifts: [
+  //     { row: 1, col: 1, employee: u1._id },
+  //     { row: 1, col: 2, employee: u1._id },
+  //     { row: 2, col: 1, employee: u2._id },
+  //     { row: 2, col: 2, employee: u2._id },
+  //     { row: 3, col: 1, employee: u3._id },
+  //     { row: 3, col: 2, employee: u3._id },
+  //   ]
+  // }});
+  //
+  // const f3Updated = await f3.updateOne({ $push: {
+  //   shifts: [
+  //     { row: 1, col: 1, employee: u1._id },
+  //     { row: 1, col: 2, employee: u1._id },
+  //     { row: 2, col: 1, employee: u2._id },
+  //     { row: 2, col: 2, employee: u2._id },
+  //     { row: 3, col: 1, employee: u3._id },
+  //     { row: 3, col: 2, employee: u3._id },
+  //   ]
+  // }});
+  //
+  // // We could return the status of all the updates:
+  // // return [u1Updated, u2Updated, u3Updated, f1Updated, f2Updated, f3Updated];
 
-  const f1Updated = await f1.updateOne({ $push: {
-    shifts: [
-      { row: 1, col: 1, employee: u1._id },
-      { row: 1, col: 2, employee: u1._id },
-      { row: 2, col: 1, employee: u2._id },
-      { row: 2, col: 2, employee: u2._id },
-      { row: 3, col: 1, employee: u3._id },
-      { row: 3, col: 2, employee: u3._id },
-    ]
-  }});
-
-  const f2Updated = await f2.updateOne({ $push: {
-    shifts: [
-      { row: 1, col: 1, employee: u1._id },
-      { row: 1, col: 2, employee: u1._id },
-      { row: 2, col: 1, employee: u2._id },
-      { row: 2, col: 2, employee: u2._id },
-      { row: 3, col: 1, employee: u3._id },
-      { row: 3, col: 2, employee: u3._id },
-    ]
-  }});
-
-  const f3Updated = await f3.updateOne({ $push: {
-    shifts: [
-      { row: 1, col: 1, employee: u1._id },
-      { row: 1, col: 2, employee: u1._id },
-      { row: 2, col: 1, employee: u2._id },
-      { row: 2, col: 2, employee: u2._id },
-      { row: 3, col: 1, employee: u3._id },
-      { row: 3, col: 2, employee: u3._id },
-    ]
-  }});
-
-  // We could return the status of all the updates:
-  // return [u1Updated, u2Updated, u3Updated, f1Updated, f2Updated, f3Updated];
-
-}; // seedReservations()
+}; // seedShifts()
 
 
 const printReport = async () => {
@@ -451,19 +466,36 @@ console.log('====VENUES====');
   });
 
 
-  // const employeeCheck = await Employee.find()
+  const employeeCheck = await Employee.find()
   // .populate({
   //   path: 'shifts.venue', // Mongoose populates this association
   //   // model: 'Venue'
   // });
-  //
-  // employeeCheck.forEach(u => {
-  //   console.log(
-  //     yellow, `${u.name}`, green, `(${u.email}):`, reset,
+  console.log('====EMPLOYEES====');
+  employeeCheck.forEach(e => {
+    console.log(
+      green, `Name: ${e.name}`, yellow, `Email: ${e.email}`,
+      reset,
   //     u.shifts.map(r => (
   //       { row: r.row, col: r.col, roster: r.roster.rosterNumber }
   //     ))
-  //   );
+    );
+  });
+
+  const shiftCheck = await Shift.find()
+  .populate('roster', 'employee');
+    // path: 'shifts.venue', // Mongoose populates this association
+    // model: 'Venue'
   // });
+  console.log('====SHIFTS====');
+  shiftCheck.forEach(s => {
+    console.log(
+      green, `Employee: ${s.employee}`, yellow, `Date: ${s.date}`, green, `Confirmed: ${s.shiftConfirmed}`,
+      reset,
+  //     u.shifts.map(r => (
+  //       { row: r.row, col: r.col, roster: r.roster.rosterNumber }
+  //     ))
+    );
+  });
 
 }; // printReport()
