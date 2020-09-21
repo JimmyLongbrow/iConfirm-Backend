@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const venueSchema = new mongoose.Schema({
-  logo: Text,
+  logo: String,
   name: String,
   address: String,
   phone: String,
@@ -12,7 +12,7 @@ const venueSchema = new mongoose.Schema({
   masterLicNo: String,
   masterLicExp: Date,
   masterLicStatus: Boolean,
-  membershipDate: Datetime
+  membershipDate: Date
 });
 
 module.exports = mongoose.model('Venue', venueSchema);

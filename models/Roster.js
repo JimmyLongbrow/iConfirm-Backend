@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 
 const rosterSchema = new mongoose.Schema({
-  date: Datetime,
-  venueId: Integer,
-  venue: Venue,
-  shifts: [Shift],
+  date: Date,
+  venue: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Venue'
+  },
+  shifts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Shift'
+  }],
   employeeType: String
 });
 
