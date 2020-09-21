@@ -4,9 +4,9 @@ const shiftSchema = new mongoose.Schema({
   date: Date,
   clockOnDate: Date,
   clockOffDate: Date,
-  employeeId: Number,
+  employeeId: String,
   employee: String,
-  rosterId: Number,
+  rosterId: String,
   roster: String,
   shiftConfirmed: Boolean
 });
