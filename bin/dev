@@ -1,2 +1,2 @@
 require('dotenv/config')
-require('./../index-with-mongoose')
+require('./../index')

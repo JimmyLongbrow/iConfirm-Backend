@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node managers-seeds.js; node staff-seeds.js",
+    "seed": "node managers-seeds.js; node employee-seeds.js",
     "seed-mongoose": "node models/seeds.js",
     "start": "nodemon index.js"
   },
