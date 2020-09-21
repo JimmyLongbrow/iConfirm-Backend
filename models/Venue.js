@@ -4,7 +4,7 @@ const venueSchema = new mongoose.Schema({
   logo: String,
   name: String,
   address: String,
-  phone: String,
+  phone: Number,
   email: String,
   licenseeName: String,
   liquorLicNo: String,
