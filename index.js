@@ -100,7 +100,7 @@ const schema = buildSchema(`
     profilePic: Text,
     name: String,
     shifts: [Shift],
-    dob: date,
+    dob: Date,
     address: String,
     phone: String,
     email: String,
@@ -320,7 +320,7 @@ app.post('/shifts', (req, res) => {
       });
 
     }
-    
+
   );
 
 }); // POST /shifts
