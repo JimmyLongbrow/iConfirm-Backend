@@ -139,36 +139,6 @@ const schema = buildSchema(`
   }
 `);
 
-// const schema = buildSchema(`
-//   type Query {
-//     roster(id: String): Roster,
-//     rosters(
-//       date: String,
-//       venueId: String,
-//       employeeType: String
-//     ): [Roster],
-//   },
-//   type Roster {
-//     date: String,
-//     venueId: String,
-//     venue: Venue,
-//     employeeType: String
-//   },
-//   type Venue {
-//     logo: String,
-//     name: String,
-//     address: String,
-//     phone: String,
-//     email: String,
-//     licenseeName: String,
-//     liquorLicNo: String,
-//     liquorLicStatus: Boolean,
-//     masterLicNo: String,
-//     masterLicExp: String,
-//     masterLicStatus: Boolean,
-//     membershipDate: String
-//   }
-// `);
 
 const getRoster = (query) => {
 
