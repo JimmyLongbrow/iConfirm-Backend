@@ -42,8 +42,8 @@ const seedVenues = async () => {
     return await Venue.create([
       {
         logo: 'Text',
-        name: 'Cheese Club',
-        address: '77 High Street',
+        name: 'The Island',
+        address: '67 Tild Street',
         phone: '555 4204',
         email: 'cheese@high.com',
         licenseeName: 'Luke',
@@ -56,8 +56,8 @@ const seedVenues = async () => {
       },
       {
         logo: 'Text',
-        name: 'Kewpie Club',
-        address: '184 High Street',
+        name: 'Darlo Country Club',
+        address: '184 Banks Street',
         phone: '577 4204',
         email: 'kewpie@high.com',
         licenseeName: 'Nemz',
@@ -70,8 +70,8 @@ const seedVenues = async () => {
       },
       {
         logo: 'Text',
-        name: 'Cheddar',
-        address: '44 High Street',
+        name: 'Manly Greenhouse',
+        address: '4 Rob Street',
         phone: '555 9632',
         email: 'cheddar@high.com',
         licenseeName: 'Jamil',
@@ -81,7 +81,35 @@ const seedVenues = async () => {
         masterLicExp: '2023-10-01T10:30:00',
         masterLicStatus: true,
         membershipDate: '2020-07-01T10:30:00'
-      }
+      },
+      {
+        logo: 'Text',
+        name: 'Nola Smokehouse',
+        address: '99 Big Street',
+        phone: '555 9632',
+        email: 'cheddar@high.com',
+        licenseeName: 'Jamil',
+        liquorLicNo: '65836583',
+        liquorLicStatus: true,
+        masterLicNo: '754569222',
+        masterLicExp: '2023-10-01T10:30:00',
+        masterLicStatus: true,
+        membershipDate: '2020-07-01T10:30:00'
+      },
+      {
+        logo: 'Text',
+        name: 'Papa Gedes Bar',
+        address: '33 Kent Street',
+        phone: '555 9632',
+        email: 'cheddar@high.com',
+        licenseeName: 'Jamil',
+        liquorLicNo: '65836583',
+        liquorLicStatus: true,
+        masterLicNo: '754569222',
+        masterLicExp: '2023-10-01T10:30:00',
+        masterLicStatus: true,
+        membershipDate: '2020-07-01T10:30:00'
+      },
     ]);
   } catch( err ){
       console.warn( 'Error creating venues:', err );
@@ -110,22 +138,22 @@ const seedRosters = async (venues) => {
       },
       {
         date: '2020-10-08T11:21:00',
-        venue: venues[0]._id,
-        employeeType: 'Security'
+        venue: venues[3]._id,
+        employeeType: 'Cleaning'
       },
       {
         date: '2020-10-08T09:45:00',
         venue: venues[1]._id,
-        employeeType: 'Security'
+        employeeType: 'Cleaning'
       },
       {
         date: '2020-10-08T10:38:00',
         venue: venues[2]._id,
-        employeeType: 'Security'
+        employeeType: 'Bar'
       },
       {
         date: '2020-10-08T13:05:00',
-        venue: venues[0]._id,
+        venue: venues[4]._id,
         employeeType: 'Bar'
       }
     ]);
@@ -181,7 +209,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/200/400',
-        name: 'Test Employee 3',
+        name: 'Jamil Samarani',
         // shifts: '[Shift]',
         dob: '1988-05-11',
         address: '11 Fake Street',
@@ -199,7 +227,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/200',
-        name: 'Test Employee 4',
+        name: 'Sam Ayoub',
         // shifts: '[Shift]',
         dob: '1990-02-07',
         address: '22 Fake Street',
@@ -217,7 +245,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/300',
-        name: 'Test Employee 5',
+        name: 'Milos Inic',
         // shifts: '[Shift]',
         dob: '1992-10-08',
         address: '44 Faker Street',
@@ -235,7 +263,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/400',
-        name: 'Test Employee 6',
+        name: 'Mirko Drca',
         // shifts: '[Shift]',
         dob: '1989-11-03',
         address: '56 Fakest Street',
@@ -253,7 +281,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/400',
-        name: 'Test Employee 7',
+        name: 'Nemo Petrovic',
         // shifts: '[Shift]',
         dob: '1988-09-05',
         address: '69 Fake Street',
@@ -271,7 +299,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/500',
-        name: 'Test Employee 8',
+        name: 'Anthony Di Lorenzo',
         // shifts: '[Shift]',
         dob: '1985-03-31',
         address: '15 Faketh Street',
@@ -289,7 +317,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/500/400',
-        name: 'Test Employee 9',
+        name: 'Daniel Harris',
         // shifts: '[Shift]',
         dob: '1982-01-15',
         address: '346 Fakerer Street',
@@ -307,7 +335,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/500/500',
-        name: 'Test Employee 10',
+        name: 'Michael Kauter',
         // shifts: '[Shift]',
         dob: '1991-07-18',
         address: '987 Faked Street',
@@ -349,10 +377,42 @@ const seedShifts = async (rosters, employees) => {
         date: '2020-10-08T09:30:00',
         clockOnDate: '2020-10-08T18:00:00',
         clockOffDate: '2020-10-08T01:30:00',
-        employee: employees[0]._id,
+        employee: employees[1]._id,
         roster: rosters[0]._id,
         shiftConfirmed: false
-      }
+      },
+      {
+        date: '2020-10-01T10:30:00',
+        clockOnDate: '2020-10-01T18:00:00',
+        clockOffDate: '2020-10-02T02:30:00',
+        employee: employees[2]._id,
+        roster: rosters[1]._id,
+        shiftConfirmed: true
+      },
+      {
+        date: '2020-10-08T09:30:00',
+        clockOnDate: '2020-10-08T18:00:00',
+        clockOffDate: '2020-10-08T01:30:00',
+        employee: employees[2]._id,
+        roster: rosters[1]._id,
+        shiftConfirmed: false
+      },
+      {
+        date: '2020-10-01T10:30:00',
+        clockOnDate: '2020-10-01T18:00:00',
+        clockOffDate: '2020-10-02T02:30:00',
+        employee: employees[3]._id,
+        roster: rosters[2]._id,
+        shiftConfirmed: true
+      },
+      {
+        date: '2020-10-08T09:30:00',
+        clockOnDate: '2020-10-08T18:00:00',
+        clockOffDate: '2020-10-08T01:30:00',
+        employee: employees[4]._id,
+        roster: rosters[3]._id,
+        shiftConfirmed: false
+      },
     ]); // create
 
     await rosters[0].updateOne({
@@ -377,7 +437,7 @@ const seedShifts = async (rosters, employees) => {
   //
   const e1Updated = await e1.updateOne({
     shifts: [
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
+      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
       {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
       {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
     ]
