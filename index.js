@@ -199,11 +199,13 @@ const getEmployee = (query) => {
 
 }; //getEmployee
 
-const getEmployees = (query) => {
+const getEmployees = async (query) => {
 
   console.log('getEmployees()', query);
+  const employees = await Employee.find( query ).populate( 'shifts' );
+  console.log(employees);
+  return employees;
 
-  return Employee.find( query );
 }; //getEmployees
 
 
@@ -380,7 +382,7 @@ app.post('/login', (req, res) => {
       );
 
       res.json({ employee, token, success: true });
-      
+
     } else {
       // employee not found, or passwords don't match - failed login
       res.status(401).json({ message: 'Authentication failed' });

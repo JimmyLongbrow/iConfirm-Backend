@@ -4,10 +4,10 @@ const employeeSchema = new mongoose.Schema({
   employeeType: String,
   profilePic: String,
   name: String,
-  shifts:{
+  shifts:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shift'
-  },
+  }],
   dob: Date,
   address: String,
   phone: String,

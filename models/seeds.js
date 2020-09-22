@@ -26,10 +26,10 @@ db.once('open', async () => {
 
   await printReport();
 
-  console.log(`Created ${ employees.length } Employees.`);
   console.log(`Created ${ rosters.length } Rosters.`);
   console.log(`Created ${ venues.length } Venues.`);
   console.log(`Created ${ shifts.length } Shifts.`);
+  console.log(`Created ${ employees.length } Employees.`);
   console.log('Done.');
   process.exit(0);
 
@@ -174,7 +174,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/200/300',
         name: 'Ahmed El Chranni',
-        // shifts: '[Shift]',
+        // shifts: '',
         dob: '1992-10-08',
         address: '123 Fake Street',
         phone: '555 1234',
@@ -419,6 +419,15 @@ const seedShifts = async (rosters, employees) => {
       $push: {
         shifts: {
           $each: createdShifts.map( s => s._id)
+        }
+      }
+    }); // update
+
+    await employees[0].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[0]._id
         }
       }
     }); // update
