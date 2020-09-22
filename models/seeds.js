@@ -11,23 +11,18 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', async () => {
 
-  // empty the collections first
+
   await Venue.deleteMany({});
   await Employee.deleteMany({});
   await Roster.deleteMany({});
   await Shift.deleteMany({});
 
   const venues = await seedVenues();
-  const rosters = await seedRosters(venues);
   const employees = await seedEmployees();
-  const shifts = await seedShifts(employees, rosters);
+  const rosters = await seedRosters(venues);
+  const shifts = await seedShifts(rosters, employees);
 
-  // Now that we have created rosters & employees, we can pass them
-  // in to our shift function to share the IDs between them.
-  // const shifts = await seedShifts(rosters, employees);
 
-  // Now let's query the DB and print out the results, to
-  // check that everything worked.
 
   await printReport();
 
@@ -36,7 +31,7 @@ db.once('open', async () => {
   console.log(`Created ${ venues.length } Venues.`);
   console.log(`Created ${ shifts.length } Shifts.`);
   console.log('Done.');
-  process.exit(0); // Finished!
+  process.exit(0);
 
 }); // db.once() initialiser
 
@@ -61,60 +56,32 @@ const seedVenues = async () => {
       },
       {
         logo: 'Text',
-        name: 'Darlo Country Club',
-        address: '7 Big Street',
-        phone: '484 0004',
-        email: 'dcc@big.com',
-        licenseeName: 'Sam',
-        liquorLicNo: '4923492',
+        name: 'Kewpie Club',
+        address: '184 High Street',
+        phone: '577 4204',
+        email: 'kewpie@high.com',
+        licenseeName: 'Nemz',
+        liquorLicNo: '4565856',
         liquorLicStatus: true,
-        masterLicNo: '0192309198',
-        masterLicExp: '2024-10-11T10:30:00',
+        masterLicNo: '744329222',
+        masterLicExp: '2024-10-01T10:30:00',
         masterLicStatus: true,
-        membershipDate: '2022-10-20T10:30:00'
+        membershipDate: '2020-10-01T10:30:00'
       },
       {
         logo: 'Text',
-        name: 'The Island',
-        address: '89 Double Bay Street',
-        phone: '4444 1234',
-        email: 'dbay@dpay.com',
-        licenseeName: 'Jimbo',
-        liquorLicNo: '3920481',
+        name: 'Cheddar',
+        address: '44 High Street',
+        phone: '555 9632',
+        email: 'cheddar@high.com',
+        licenseeName: 'Jamil',
+        liquorLicNo: '65836583',
         liquorLicStatus: true,
-        masterLicNo: '1039129398',
-        masterLicExp: '2024-12-11T10:30:00',
+        masterLicNo: '754569222',
+        masterLicExp: '2023-10-01T10:30:00',
         masterLicStatus: true,
-        membershipDate: '2022-04-20T10:30:00'
-      },
-      {
-        logo: 'Text',
-        name: 'Club77',
-        address: '99 Kings X Street',
-        phone: '1234 1234',
-        email: 'kings@x.com',
-        licenseeName: 'Dazza',
-        liquorLicNo: '422425',
-        liquorLicStatus: true,
-        masterLicNo: '4324234234',
-        masterLicExp: '2022-12-11T10:30:00',
-        masterLicStatus: true,
-        membershipDate: '2021-04-20T10:30:00'
-      },
-      {
-        logo: 'Text',
-        name: 'The Ivy',
-        address: '40 Goerge Street',
-        phone: '0987 7134',
-        email: 'the@ivy.com',
-        licenseeName: 'Justin',
-        liquorLicNo: '424242',
-        liquorLicStatus: true,
-        masterLicNo: '12341414',
-        masterLicExp: '2032-12-11T10:30:00',
-        masterLicStatus: true,
-        membershipDate: '2031-04-20T10:30:00'
-      },
+        membershipDate: '2020-07-01T10:30:00'
+      }
     ]);
   } catch( err ){
       console.warn( 'Error creating venues:', err );
@@ -123,7 +90,6 @@ const seedVenues = async () => {
 }; // seedVenues()
 
 const seedRosters = async (venues) => {
-
   try {
 
     return await Roster.create([
@@ -133,29 +99,29 @@ const seedRosters = async (venues) => {
         employeeType: 'Security'
       },
       {
-        date: '2020-11-01T12:30:00',
-        venue: venues[0]._id,
-        employeeType: 'Cleaning'
+        date: '2020-10-01T12:30:00',
+        venue: venues[1]._id,
+        employeeType: 'Security'
       },
       {
         date: '2020-10-01T16:20:00',
-        venue: venues[0]._id,
+        venue: venues[2]._id,
         employeeType: 'Security'
       },
       {
         date: '2020-10-08T11:21:00',
         venue: venues[0]._id,
-        employeeType: 'Cleaning'
+        employeeType: 'Security'
       },
       {
         date: '2020-10-08T09:45:00',
-        venue: venues[0]._id,
-        employeeType: 'Bar'
+        venue: venues[1]._id,
+        employeeType: 'Security'
       },
       {
         date: '2020-10-08T10:38:00',
-        venue: venues[0]._id,
-        employeeType: 'Bar'
+        venue: venues[2]._id,
+        employeeType: 'Security'
       },
       {
         date: '2020-10-08T13:05:00',
@@ -215,7 +181,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/200/400',
-        name: 'Jamil Samarani',
+        name: 'Test Employee 3',
         // shifts: '[Shift]',
         dob: '1988-05-11',
         address: '11 Fake Street',
@@ -231,9 +197,9 @@ const seedEmployees = async () => {
         firstAidExp: '2022-04-13'
       },
       {
-        employeeType: 'Bar',
+        employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/200',
-        name: 'Daniel Harris',
+        name: 'Test Employee 4',
         // shifts: '[Shift]',
         dob: '1990-02-07',
         address: '22 Fake Street',
@@ -249,9 +215,9 @@ const seedEmployees = async () => {
         firstAidExp: '2021-11-02'
       },
       {
-        employeeType: 'Bar',
+        employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/300',
-        name: 'Milos Inic',
+        name: 'Test Employee 5',
         // shifts: '[Shift]',
         dob: '1992-10-08',
         address: '44 Faker Street',
@@ -267,16 +233,16 @@ const seedEmployees = async () => {
         firstAidExp: '2022-03-21'
       },
       {
-        employeeType: 'Bar',
+        employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/400',
-        name: 'Nemo Petrovic',
+        name: 'Test Employee 6',
         // shifts: '[Shift]',
         dob: '1989-11-03',
         address: '56 Fakest Street',
         phone: '592 9434',
         email: 'six@six.com',
         passwordDigest: bcrypt.hashSync('chicken', 10),
-        emergencyContactName: 'Jamil',
+        emergencyContactName: 'Nemo',
         emergencyContactPhone: '885 5125',
         securityLicNo: '408967234',
         securityLicStatus: true,
@@ -285,9 +251,9 @@ const seedEmployees = async () => {
         firstAidExp: '2021-11-09'
       },
       {
-        employeeType: 'Cleaning',
+        employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/400',
-        name: 'Mirko Drca',
+        name: 'Test Employee 7',
         // shifts: '[Shift]',
         dob: '1988-09-05',
         address: '69 Fake Street',
@@ -303,9 +269,9 @@ const seedEmployees = async () => {
         firstAidExp: '2021-01-21'
       },
       {
-        employeeType: 'Cleaning',
+        employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/500',
-        name: 'Sam Ayoub',
+        name: 'Test Employee 8',
         // shifts: '[Shift]',
         dob: '1985-03-31',
         address: '15 Faketh Street',
@@ -321,9 +287,9 @@ const seedEmployees = async () => {
         firstAidExp: '2021-04-07'
       },
       {
-        employeeType: 'Cleaning',
+        employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/500/400',
-        name: 'Dom Tomoniko',
+        name: 'Test Employee 9',
         // shifts: '[Shift]',
         dob: '1982-01-15',
         address: '346 Fakerer Street',
@@ -341,7 +307,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/500/500',
-        name: 'Anthony Di Lorenzo',
+        name: 'Test Employee 10',
         // shifts: '[Shift]',
         dob: '1991-07-18',
         address: '987 Faked Street',
@@ -370,62 +336,35 @@ const seedShifts = async (rosters, employees) => {
 
   try {
 
-    return await Shift.create([
+    const createdShifts = await Shift.create([
       {
         date: '2020-10-01T10:30:00',
         clockOnDate: '2020-10-01T18:00:00',
         clockOffDate: '2020-10-02T02:30:00',
-        employeeId: employees[0]._id,
-        employee: employees[0].name,
+        employee: employees[0]._id,
         roster: rosters[0]._id,
         shiftConfirmed: true
       },
       {
-        date: '2020-10-02T10:30:00',
-        clockOnDate: '2020-10-02T18:00:00',
-        clockOffDate: '2020-10-03T02:30:00',
-        employeeId: employees[0]._id,
-        employee: employees[0].name,
-        rosterId: rosters[0].name,
-        shiftConfirmed: true
-      },
-      {
-        date: '2020-10-01T10:30:00',
-        clockOnDate: '2020-10-01T18:00:00',
-        clockOffDate: '2020-10-02T02:30:00',
-        employeeId: employees[0]._id,
-        employee: employees[0].name,
-        rosterId: rosters[0]._id,
-        shiftConfirmed: true
-      },
-      {
-        date: '2020-10-02T10:30:00',
-        clockOnDate: '2020-10-02T18:00:00',
-        clockOffDate: '2020-10-03T02:30:00',
-        employeeId: employees[0]._id,
-        employee: employees[0].name,
-        rosterId: rosters[0]._id,
-        shiftConfirmed: true
-      },
-      {
-        date: '2020-10-01T10:30:00',
-        clockOnDate: '2020-10-01T18:00:00',
-        clockOffDate: '2020-10-02T02:30:00',
-        employeeId: employees[0]._id,
-        employee: employees[0].name,
-        rosterId: rosters[0]._id,
-        shiftConfirmed: true
-      },
-      {
-        date: '2020-10-02T10:30:00',
-        clockOnDate: '2020-10-02T18:00:00',
-        clockOffDate: '2020-10-03T02:30:00',
-        employeeId: employees[0]._id,
-        employee: employees[0].name,
-        rosterId: rosters[0]._id,
-        shiftConfirmed: true
-      },
-    ]);
+        date: '2020-10-08T09:30:00',
+        clockOnDate: '2020-10-08T18:00:00',
+        clockOffDate: '2020-10-08T01:30:00',
+        employee: employees[0]._id,
+        roster: rosters[0]._id,
+        shiftConfirmed: false
+      }
+    ]); // create
+
+    await rosters[0].updateOne({
+      $push: {
+        shifts: {
+          $each: createdShifts.map( s => s._id)
+        }
+      }
+    }); // update
+
+    return createdShifts;
+
   } catch( err ){
       console.warn( 'Error creating shifts:', err );
       process.exit(1);
@@ -501,7 +440,15 @@ console.log('====VENUES====');
     );
   });
 
-  const rosterCheck = await Roster.find().populate('venue');
+  const rosterCheck = await Roster.find()
+  .populate('venue')
+  .populate({
+    path: 'shifts',
+    populate: {
+      path: 'employee',
+      model: 'Employee'
+    }
+  })
   //   path: 'shifts.employee', // Mongoose populates this association
   //   // model: 'Employee'
   // });
@@ -510,10 +457,12 @@ console.log('====VENUES====');
     console.log(
       green, `Type: ${r.employeeType}:`, yellow, `Venue: ${r.venue.name}`,
       reset,
-      // f.shifts.map(r =>({
-      //   row: r.row, col: r.col, employee: r.employee.name
-      // }))
     );
+    console.dir(
+      r.shifts.map(s =>({
+      employeeName: s.employee.name, date: s.date, confirmed: s.shiftConfirmed
+    }))
+  );
   });
 
 
@@ -527,23 +476,23 @@ console.log('====VENUES====');
     console.log(
       green, `Name: ${e.name}`, yellow, `Email: ${e.email}`,
       reset,
-  //     u.shifts.map(r => (
-  //       { row: r.row, col: r.col, roster: r.roster.rosterNumber }
+  //     e.shifts.map(s => (
+  //       { date: s.date, venue: s.roster.venue.name, address:s.roster.venue.address }
   //     ))
     );
   });
 
   const shiftCheck = await Shift.find()
-  .populate('employee', 'roster');
-    // path: 'shifts.employee', // Mongoose populates this association
-    // model: 'Employee'
+  .populate('roster').populate('employee');
+    // path: 'shifts.venue', // Mongoose populates this association
+    // model: 'Venue'
   // });
   console.log('====SHIFTS====');
   shiftCheck.forEach(s => {
     console.log(
-      green, `Employee: ${s.employee}`, yellow, `Date: ${s.date}`, green, `Confirmed: ${s.shiftConfirmed}`,
+      green, `Employee: ${s.employee.name}`, yellow, `Date: ${s.date}`, green, `Confirmed: ${s.shiftConfirmed}`, yellow, `Roster employee type: ${s.roster.employeeType}`,
       reset,
-  //     u.shifts.map(r => (
+  //     s.shifts.map(r => (
   //       { row: r.row, col: r.col, roster: r.roster.rosterNumber }
   //     ))
     );
