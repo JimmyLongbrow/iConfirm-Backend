@@ -1,5 +1,9 @@
 // DB init
 const mongoose = require('mongoose')
+const Roster = require('./models/Roster');
+const Employee = require('./models/Employee');
+const Venue = require('./models/Venue');
+const Shift = require('./models/Shift');
 mongoose.connect('mongodb://127.0.0.1:27017/iconfirm', {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -61,23 +65,23 @@ const schema = buildSchema(`
       masterLicNo: String,
       masterLicExp: String,
       masterLicStatus: Boolean,
-      membershipDate: Int
+      membershipDate: String
     ): [Venue],
 
     roster(id: String): Roster,
     rosters(
-      date: Int,
-      venueId: Int,
+      date: String,
+      venue: String,
       employeeType: String
     ): [Roster],
 
     shift(id: String): Shift,
     shifts(
-      date: Int,
-      clockOnDate: Int,
-      clockOffDate: Int,
-      employeeId: Int,
-      rosterId: Int,
+      date: String,
+      clockOnDate: String,
+      clockOffDate: String,
+      employeeId: String,
+      rosterId: String,
       shiftConfirmed: Boolean
     ): [Shift],
   },
@@ -88,7 +92,7 @@ const schema = buildSchema(`
     profilePic: String,
     name: String,
     shifts: [Shift],
-    dob: Int,
+    dob: String,
     address: String,
     phone: String,
     email: String,
@@ -99,24 +103,22 @@ const schema = buildSchema(`
     securityLicStatus: Boolean,
     rsaNo: String,
     rsaLicStatus: Boolean,
-    firstAidExp: Int
+    firstAidExp: String
   },
 
   type Roster {
-    date: Int,
-    venueId: Int,
+    date: String,
     venue: Venue,
     shifts: [Shift],
     employeeType: String
   },
 
   type Shift {
-    date: Int,
-    clockOnDate: Int,
-    clockOffDate: Int,
-    employeeId: Int,
+    date: String,
+    clockOnDate: String,
+    clockOffDate: String,
+    employeeId: String,
     employee: Employee,
-    rosterId: Int,
     roster: Roster,
     shiftConfirmed: Boolean
   },
@@ -131,64 +133,128 @@ const schema = buildSchema(`
     liquorLicNo: String,
     liquorLicStatus: Boolean,
     masterLicNo: String,
-    masterLicExp: Int,
+    masterLicExp: String,
     masterLicStatus: Boolean,
-    membershipDate: Int
+    membershipDate: String
   }
 `);
 
+// const schema = buildSchema(`
+//   type Query {
+//     roster(id: String): Roster,
+//     rosters(
+//       date: String,
+//       venueId: String,
+//       employeeType: String
+//     ): [Roster],
+//   },
+//   type Roster {
+//     date: String,
+//     venueId: String,
+//     venue: Venue,
+//     employeeType: String
+//   },
+//   type Venue {
+//     logo: String,
+//     name: String,
+//     address: String,
+//     phone: String,
+//     email: String,
+//     licenseeName: String,
+//     liquorLicNo: String,
+//     liquorLicStatus: Boolean,
+//     masterLicNo: String,
+//     masterLicExp: String,
+//     masterLicStatus: Boolean,
+//     membershipDate: String
+//   }
+// `);
+
 const getRoster = (query) => {
+
   console.log('getRoster()', query);
 
-  return new Promise( (resolve, reject) => {
-
-    db.collection('rosters').findOne(ObjectId(query.id),(err, roster) => {
-
-      if( err ){
-        reject( err );
-        return console.log('Error querying roster', err);
-      }
-
-      console.log('found roster', roster);
-
-    }); //db
-
-  }); //promises
+  return Roster.findOne({ _id: query.id });
 
 }; //getRoster
 
 const getRosters = (query) => {
+
   console.log('getRosters()', query);
 
-  return new Promise( (resolve, reject) => {
-
-    db.collection('rosters').find(query).toArray((err, rosters) => {
-
-      if( err ){
-        reject( err );
-        return console.log('Error querying rosters', err);
-      }
-
-      console.log('found rosters', rosters);
-      resolve(rosters);
-
-    }); //db
-
-  }); //promises
-
+  return Roster.find( query );
 }; //getRosters
+
+
+
+
+const getVenue = (query) => {
+
+  console.log('getVenue()', query);
+
+  return Venue.findOne({ _id: query.id });
+
+}; //getVenue
+
+const getVenues = (query) => {
+
+  console.log('getVenues()', query);
+
+  return Venue.find( query );
+}; //getVenues
+
+
+
+const getShift = (query) => {
+
+  console.log('getShift()', query);
+
+  return Shift.findOne({ _id: query.id });
+
+}; //getShift
+
+const getShifts = (query) => {
+
+  console.log('getShifts()', query);
+
+  return Shift.find( query );
+}; //getShifts
+
+
+const getEmployee = (query) => {
+
+  console.log('getEmployee()', query);
+
+  return Employee.findOne({ _id: query.id });
+
+}; //getEmployee
+
+const getEmployees = (query) => {
+
+  console.log('getEmployees()', query);
+
+  return Employee.find( query );
+}; //getEmployees
+
+
 
 
 
 const rootResolver = {
   roster: getRoster,
-  rosters: getRosters
+  rosters: getRosters,
+  venue: getVenue,
+  venues: getVenues,
+  shift: getShift,
+  shifts: getShifts,
+  employee: getEmployee,
+  employees: getEmployees,
 };
 
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: rootResolver,
-  graphql: true
+  graphiql: true
 }));
 
 // TODO: Use "Apollo" package in the frontend to do GraphQL
@@ -201,16 +267,14 @@ app.listen(PORT, () => {
 
 app.get('/rosters', (req, res) => {
 
-  db.collection('rosters').find().toArray( (err, result) => {
-
-    if( err ){
-      console.log('Query error: ', err );
-      return res.sendStatus(500); // report error as HTTP 500 to browser
-    } // if
-
-    res.json( result ); // send the DB result back to the browser as JSON
-
-  }); //db
+  Roster.find()
+  .then( results => {
+    res.json( results ); // send the DB result back to the browser as JSON
+  })
+  .catch( err => {
+    console.log('Query error: ', err );
+    res.sendStatus(500); // report error as HTTP 500 to browser
+  });
 
 }); // GET /rosters
 

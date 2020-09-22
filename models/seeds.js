@@ -132,36 +132,36 @@ const seedRosters = async (venues) => {
         venue: venues[0]._id,
         employeeType: 'Security'
       },
-      // {
-      //   date: '2020-11-01T12:30:00',
-      //   venueId: venues[1]._id,
-      //   employeeType: 'Cleaning'
-      // },
-      // {
-      //   date: '2020-10-01T16:20:00',
-      //   venueId: venues[0]._id,
-      //   employeeType: 'Security'
-      // },
-      // {
-      //   date: '2020-10-08T11:21:00',
-      //   venueId: venues[0]._id,
-      //   employeeType: 'Cleaning'
-      // },
-      // {
-      //   date: '2020-10-08T09:45:00',
-      //   venueId: venues[0]._id,
-      //   employeeType: 'Bar'
-      // },
-      // {
-      //   date: '2020-10-08T10:38:00',
-      //   venueId: venues[0]._id,
-      //   employeeType: 'Bar'
-      // },
-      // {
-      //   date: '2020-10-08T13:05:00',
-      //   venueId: venues[0]._id,
-      //   employeeType: 'Bar'
-      // }
+      {
+        date: '2020-11-01T12:30:00',
+        venue: venues[0]._id,
+        employeeType: 'Cleaning'
+      },
+      {
+        date: '2020-10-01T16:20:00',
+        venue: venues[0]._id,
+        employeeType: 'Security'
+      },
+      {
+        date: '2020-10-08T11:21:00',
+        venue: venues[0]._id,
+        employeeType: 'Cleaning'
+      },
+      {
+        date: '2020-10-08T09:45:00',
+        venue: venues[0]._id,
+        employeeType: 'Bar'
+      },
+      {
+        date: '2020-10-08T10:38:00',
+        venue: venues[0]._id,
+        employeeType: 'Bar'
+      },
+      {
+        date: '2020-10-08T13:05:00',
+        venue: venues[0]._id,
+        employeeType: 'Bar'
+      }
     ]);
 
   } catch( err ){
