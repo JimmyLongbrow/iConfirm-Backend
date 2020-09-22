@@ -356,12 +356,8 @@ app.post('/login', (req, res) => {
 
   const { email, password } = req.body;
 
-  db.collection('employees').findOne({ email }, (err, employee) => {
-
-    if( err ){
-      res.status(500).json({ message: 'Server error' });
-      return console.log('Error retrieving employee', err);
-    }
+  Employee.findOne({ email })
+  .then((employee) => {
 
     console.log('employee found:', employee);
     // res.json( employee );
@@ -384,14 +380,19 @@ app.post('/login', (req, res) => {
       );
 
       res.json({ employee, token, success: true });
-
+      
     } else {
       // employee not found, or passwords don't match - failed login
       res.status(401).json({ message: 'Authentication failed' });
     }
 
+  }) // .then()
+  .catch((err) => {
 
-  }); // find employee
+    res.status(500).json({ message: 'Server error' });
+    return console.log('Error retrieving employee', err);
+
+  }); // catch
 
 }); // POST /login
 

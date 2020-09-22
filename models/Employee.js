@@ -22,4 +22,12 @@ const employeeSchema = new mongoose.Schema({
   firstAidExp: Date
 });
 
+employeeSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+}
+
+employeeSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+}
+
 module.exports = mongoose.model('Employee', employeeSchema);
