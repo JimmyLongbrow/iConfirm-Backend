@@ -29,7 +29,7 @@ db.once('open', async () => {
   console.log(`Created ${ employees.length } Employees.`);
   console.log(`Created ${ rosters.length } Rosters.`);
   console.log(`Created ${ venues.length } Venues.`);
-  console.log(`Created ${ shifts.length } Rosters.`);
+  console.log(`Created ${ shifts.length } Shifts.`);
   console.log('Done.');
   process.exit(0);
 
@@ -145,7 +145,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/200/300',
-        name: 'Test Employee 1',
+        name: 'Ahmed El Chranni',
         // shifts: '[Shift]',
         dob: '1992-10-08',
         address: '123 Fake Street',
@@ -163,7 +163,7 @@ const seedEmployees = async () => {
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/300',
-        name: 'Test Employee 2',
+        name: 'Haysam Abdallah',
         // shifts: '[Shift]',
         dob: '1991-11-05',
         address: '33 Fake Street',
@@ -369,6 +369,50 @@ const seedShifts = async (rosters, employees) => {
       console.warn( 'Error creating shifts:', err );
       process.exit(1);
   }
+  // // Shorthand access to all the rosters & employees:
+  const [r1] = rosters;
+  const [e1, e2, e3] = employees;
+  //
+  // // Create shifts in Employee docs
+  //
+  const e1Updated = await e1.updateOne({
+    shifts: [
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
+      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
+    ]
+  });
+
+  const e2Updated = await e2.updateOne({
+    shifts: [
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
+      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
+    ]
+  });
+
+  const e3Updated = await e3.updateOne({
+    shifts: [
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
+    ]
+  });
+
+
+  const r1Updated = await r1.updateOne({ $push: {
+    shifts: [
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-01T18:00:00', employee: e1._id },
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', employee: e1._id },
+      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', employee: e1._id },
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', employee: e2._id },
+      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', employee: e2._id },
+      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', employee: e3._id },
+    ]
+  }});
+
+
+  // We could return the status of all the updates:
+  return [e1Updated, e2Updated, e3Updated, r1Updated];
+  console.log('===========Updated----------',r1);
+
 }; // seedShifts()
 
 
@@ -390,8 +434,8 @@ console.log('====VENUES====');
     console.log(
       green, `${v.name}:`, yellow, `${v.address} -> ${v.email}`,
       reset,
-      // f.shifts.map(r =>({
-      //   row: r.row, col: r.col, employee: r.employee.name
+      // e.shifts.map(r =>({
+      //   date: r.date, clockOnDate: r.clockOnDate, employee: r.employee.name
       // }))
     );
   });
