@@ -38,7 +38,7 @@ const { buildSchema } = require('graphql');
 
 const schema = buildSchema(`
   type Query {
-    authenticated_employee: Employee,
+    authenticatedEmployee: Employee,
 
     venue(id: String): Venue,
     venues(
@@ -72,6 +72,23 @@ const schema = buildSchema(`
       roster: String,
       shiftConfirmed: Boolean
     ): [Shift],
+  },
+
+  type Mutation {
+    createVenue(
+      logo: String,
+      name: String,
+      address: String,
+      phone: String,
+      email: String,
+      licenseeName: String,
+      liquorLicNo: String,
+      liquorLicStatus: Boolean,
+      masterLicNo: String,
+      masterLicExp: String,
+      masterLicStatus: Boolean,
+      membershipDate: String
+    ): Venue
   },
 
 
@@ -327,6 +344,14 @@ const getAuthenticatedEmployee = (query, req) => {
 
 }; // end getAuthenticatedEmployee()
 
+const createVenue = (query) => {
+
+  return Venue.insertOne(query);
+  //TODO: Might need to .populate some of the associations. eg: rosters.
+
+}; // end createVenue()
+
+
 
 const rootResolver = {
   roster: getRoster,
@@ -337,7 +362,9 @@ const rootResolver = {
   shifts: getShifts,
   // employee: getEmployee,
   // employees: getEmployees,
-  authenticated_employee: getAuthenticatedEmployee
+  authenticatedEmployee: getAuthenticatedEmployee,
+  createVenue: createVenue
+
 
 };
 
