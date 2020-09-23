@@ -12,7 +12,11 @@ const venueSchema = new mongoose.Schema({
   masterLicNo: String,
   masterLicExp: Date,
   masterLicStatus: Boolean,
-  membershipDate: Date
+  membershipDate: Date,
+  roster: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Roster'
+  }]
 });
 
 module.exports = mongoose.model('Venue', venueSchema);
