@@ -38,17 +38,7 @@ const { buildSchema } = require('graphql');
 
 const schema = buildSchema(`
   type Query {
-    employee(id: String): Employee,
-    employees(
-      employeeType: String,
-      profilePic: String,
-      name: String,
-      phone: String,
-      email: String,
-      securityLicStatus: Boolean,
-      rsaLicStatus: Boolean,
-      firstAidExp: String
-    ): [Employee],
+    authenticatedEmployee: Employee,
 
     venue(id: String): Venue,
     venues(
@@ -82,6 +72,23 @@ const schema = buildSchema(`
       roster: String,
       shiftConfirmed: Boolean
     ): [Shift],
+  },
+
+  type Mutation {
+    createVenue(
+      logo: String,
+      name: String,
+      address: String,
+      phone: String,
+      email: String,
+      licenseeName: String,
+      liquorLicNo: String,
+      liquorLicStatus: Boolean,
+      masterLicNo: String,
+      masterLicExp: String,
+      masterLicStatus: Boolean,
+      membershipDate: String
+    ): Venue
   },
 
 
@@ -136,6 +143,108 @@ const schema = buildSchema(`
     rosters: [Roster],
   }
 `);
+
+////// Really insecure - needs a psych //////
+// const schema = buildSchema(`
+//   type Query {
+//     employee(id: String): Employee,
+//     employees(
+//       employeeType: String,
+//       profilePic: String,
+//       name: String,
+//       phone: String,
+//       email: String,
+//       securityLicStatus: Boolean,
+//       rsaLicStatus: Boolean,
+//       firstAidExp: String
+//     ): [Employee],
+//
+//     venue(id: String): Venue,
+//     venues(
+//       logo: String,
+//       name: String,
+//       address: String,
+//       phone: String,
+//       email: String,
+//       licenseeName: String,
+//       liquorLicNo: String,
+//       liquorLicStatus: Boolean,
+//       masterLicNo: String,
+//       masterLicExp: String,
+//       masterLicStatus: Boolean,
+//       membershipDate: String
+//     ): [Venue],
+//
+//     roster(id: String): Roster,
+//     rosters(
+//       date: String,
+//       venue: String,
+//       employeeType: String
+//     ): [Roster],
+//
+//     shift(id: String): Shift,
+//     shifts(
+//       date: String,
+//       clockOnDate: String,
+//       clockOffDate: String,
+//       employee: String,
+//       roster: String,
+//       shiftConfirmed: Boolean
+//     ): [Shift],
+//   },
+//
+//
+//   type Employee {
+//     employeeType: String,
+//     profilePic: String,
+//     name: String,
+//     shifts: [Shift],
+//     dob: String,
+//     address: String,
+//     phone: String,
+//     email: String,
+//     passwordDigest: String,
+//     emergencyContactName: String,
+//     emergencyContactPhone: String,
+//     securityLicNo: String,
+//     securityLicStatus: Boolean,
+//     rsaNo: String,
+//     rsaLicStatus: Boolean,
+//     firstAidExp: String
+//   },
+//
+//   type Roster {
+//     date: String,
+//     venue: Venue,
+//     shifts: [Shift],
+//     employeeType: String
+//   },
+//
+//   type Shift {
+//     date: String,
+//     clockOnDate: String,
+//     clockOffDate: String,
+//     employee: Employee,
+//     roster: Roster,
+//     shiftConfirmed: Boolean
+//   },
+//
+//   type Venue {
+//     logo: String,
+//     name: String,
+//     address: String,
+//     phone: String,
+//     email: String,
+//     licenseeName: String,
+//     liquorLicNo: String,
+//     liquorLicStatus: Boolean,
+//     masterLicNo: String,
+//     masterLicExp: String,
+//     masterLicStatus: Boolean,
+//     membershipDate: String,
+//     rosters: [Roster],
+//   }
+// `);
 
 
 const getRoster = (query) => {
@@ -218,6 +327,29 @@ const getEmployees = async (query) => {
 
 }; //getEmployees
 
+const getAuthenticatedEmployee = (query, req) => {
+
+  console.log('getAuthenticatedEmployee()', query, req.user);
+
+  return Employee.findOne({ _id: req.user._id }).populate( {
+    path: 'shifts',
+    populate: {
+      path: 'roster',
+      populate: {
+        path: 'venue'
+      }
+    }
+  });
+
+
+}; // end getAuthenticatedEmployee()
+
+const createVenue = (query) => {
+
+  return Venue.insertOne(query);
+  //TODO: Might need to .populate some of the associations. eg: rosters.
+
+}; // end createVenue()
 
 
 const rootResolver = {
@@ -227,11 +359,15 @@ const rootResolver = {
   venues: getVenues,
   shift: getShift,
   shifts: getShifts,
-  employee: getEmployee,
-  employees: getEmployees,
+  // employee: getEmployee,
+  // employees: getEmployees,
+  authenticatedEmployee: getAuthenticatedEmployee,
+  createVenue: createVenue
+
+
 };
 
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', checkAuth(), graphqlHTTP({
   schema: schema,
   rootValue: rootResolver,
   graphiql: true
