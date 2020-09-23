@@ -202,7 +202,7 @@ const getEmployee = (query) => {
 const getEmployees = (query) => {
 
   console.log('getEmployees()', query);
-
+  console.log('FIRE');
   return Employee.find( query );
 }; //getEmployees
 
@@ -380,7 +380,7 @@ app.post('/login', (req, res) => {
       );
 
       res.json({ employee, token, success: true });
-      
+
     } else {
       // employee not found, or passwords don't match - failed login
       res.status(401).json({ message: 'Authentication failed' });
@@ -397,7 +397,7 @@ app.post('/login', (req, res) => {
 }); // POST /login
 
 // Check authentication for this route, i.e. logged-in employees only
-app.get('/rosters-seekrit', checkAuth(), (req, res) => {
+app.get('/login', checkAuth(), (req, res) => {
   res.json({ seekrit: 'Welcome to Manager Section', employee: req.employee });
 });
 
