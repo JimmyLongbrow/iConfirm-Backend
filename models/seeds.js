@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const Roster = require('../models/Roster');
-const Employee = require('../models/Employee');
 const Venue = require('../models/Venue');
+const Roster = require('../models/Roster');
 const Shift = require('../models/Shift');
+const Employee = require('../models/Employee');
 const bcrypt = require('bcrypt');
 
 mongoose.connect('mongodb://127.0.0.1:27017/iconfirm', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -13,9 +13,9 @@ db.once('open', async () => {
 
 
   await Venue.deleteMany({});
-  await Employee.deleteMany({});
   await Roster.deleteMany({});
   await Shift.deleteMany({});
+  await Employee.deleteMany({});
 
   const venues = await seedVenues();
   const employees = await seedEmployees();
@@ -26,10 +26,10 @@ db.once('open', async () => {
 
   await printReport();
 
-  console.log(`Created ${ employees.length } Employees.`);
   console.log(`Created ${ rosters.length } Rosters.`);
   console.log(`Created ${ venues.length } Venues.`);
   console.log(`Created ${ shifts.length } Shifts.`);
+  console.log(`Created ${ employees.length } Employees.`);
   console.log('Done.');
   process.exit(0);
 
@@ -46,6 +46,7 @@ const seedVenues = async () => {
         address: '67 Tild Street',
         phone: '555 4204',
         email: 'cheese@high.com',
+        // roster: rosters[0]._id,
         licenseeName: 'Luke',
         liquorLicNo: '7345856',
         liquorLicStatus: true,
@@ -60,6 +61,7 @@ const seedVenues = async () => {
         address: '184 Banks Street',
         phone: '577 4204',
         email: 'kewpie@high.com',
+        // roster: rosters[1,5]._id,
         licenseeName: 'Nemz',
         liquorLicNo: '4565856',
         liquorLicStatus: true,
@@ -74,6 +76,7 @@ const seedVenues = async () => {
         address: '4 Rob Street',
         phone: '555 9632',
         email: 'cheddar@high.com',
+        // roster: rosters[2,6]._id,
         licenseeName: 'Jamil',
         liquorLicNo: '65836583',
         liquorLicStatus: true,
@@ -88,6 +91,7 @@ const seedVenues = async () => {
         address: '99 Big Street',
         phone: '555 9632',
         email: 'cheddar@high.com',
+        // roster: rosters[3]._id,
         licenseeName: 'Jamil',
         liquorLicNo: '65836583',
         liquorLicStatus: true,
@@ -102,6 +106,7 @@ const seedVenues = async () => {
         address: '33 Kent Street',
         phone: '555 9632',
         email: 'cheddar@high.com',
+        // roster: rosters[4]._id,
         licenseeName: 'Jamil',
         liquorLicNo: '65836583',
         liquorLicStatus: true,
@@ -111,59 +116,59 @@ const seedVenues = async () => {
         membershipDate: '2020-07-01T10:30:00'
       },
     ]);
+
+    // await rosters[0].updateOne({
+    //   $push: {
+    //     venues: {
+    //       // $each: createdRosters.map( s => s._id)
+    //       _id: createdRosters[0]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await rosters[1,5].updateOne({
+    //   $push: {
+    //     venues: {
+    //       // $each: createdRosters.map( s => s._id)
+    //       _id: createdRosters[1]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await rosters[2,6].updateOne({
+    //   $push: {
+    //     venues: {
+    //       // $each: createdRosters.map( s => s._id)
+    //       _id: createdRosters[2]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await rosters[3].updateOne({
+    //   $push: {
+    //     venues: {
+    //       // $each: createdRosters.map( s => s._id)
+    //       _id: createdRosters[3]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await rosters[4].updateOne({
+    //   $push: {
+    //     venues: {
+    //       // $each: createdRosters.map( s => s._id)
+    //       _id: createdRosters[4]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // return createdRosters;
+
   } catch( err ){
       console.warn( 'Error creating venues:', err );
       process.exit(1);
   }
 }; // seedVenues()
-
-const seedRosters = async (venues) => {
-  try {
-
-    return await Roster.create([
-      {
-        date: '2020-10-01T10:30:00',
-        venue: venues[0]._id,
-        employeeType: 'Security'
-      },
-      {
-        date: '2020-10-01T12:30:00',
-        venue: venues[1]._id,
-        employeeType: 'Security'
-      },
-      {
-        date: '2020-10-01T16:20:00',
-        venue: venues[2]._id,
-        employeeType: 'Security'
-      },
-      {
-        date: '2020-10-08T11:21:00',
-        venue: venues[3]._id,
-        employeeType: 'Cleaning'
-      },
-      {
-        date: '2020-10-08T09:45:00',
-        venue: venues[1]._id,
-        employeeType: 'Cleaning'
-      },
-      {
-        date: '2020-10-08T10:38:00',
-        venue: venues[2]._id,
-        employeeType: 'Bar'
-      },
-      {
-        date: '2020-10-08T13:05:00',
-        venue: venues[4]._id,
-        employeeType: 'Bar'
-      }
-    ]);
-
-  } catch( err ){
-    console.warn( 'Error creating rosters:', err );
-    process.exit(1);
-  }
-
-}; // seedRosters
 
 const seedEmployees = async () => {
 
@@ -174,7 +179,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/200/300',
         name: 'Ahmed El Chranni',
-        // shifts: '[Shift]',
+        // shift: shifts[0]._id,
         dob: '1992-10-08',
         address: '123 Fake Street',
         phone: '555 1234',
@@ -186,13 +191,13 @@ const seedEmployees = async () => {
         securityLicStatus: true,
         rsaNo: "10290872",
         rsaLicStatus: true,
-        firstAidExp: '2021-09-16'
+        firstAidExp: '2021-09-16',
       },
       {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/300',
         name: 'Haysam Abdallah',
-        // shifts: '[Shift]',
+        // shift: shifts[1]._id,
         dob: '1991-11-05',
         address: '33 Fake Street',
         phone: '575 1234',
@@ -210,7 +215,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/200/400',
         name: 'Jamil Samarani',
-        // shifts: '[Shift]',
+        // shift: shifts[2,3]._id,
         dob: '1988-05-11',
         address: '11 Fake Street',
         phone: '599 1864',
@@ -228,7 +233,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/200',
         name: 'Sam Ayoub',
-        // shifts: '[Shift]',
+        // shift: shifts[4]._id,
         dob: '1990-02-07',
         address: '22 Fake Street',
         phone: '715 5862',
@@ -246,7 +251,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/300',
         name: 'Milos Inic',
-        // shifts: '[Shift]',
+        // shift: shifts[5]._id,
         dob: '1992-10-08',
         address: '44 Faker Street',
         phone: '585 9934',
@@ -264,7 +269,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/300/400',
         name: 'Mirko Drca',
-        // shifts: '[Shift]',
+        // shift: shifts[4]._id,
         dob: '1989-11-03',
         address: '56 Fakest Street',
         phone: '592 9434',
@@ -282,7 +287,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/400',
         name: 'Nemo Petrovic',
-        // shifts: '[Shift]',
+        // shift: shifts[4]._id,
         dob: '1988-09-05',
         address: '69 Fake Street',
         phone: '558 9572',
@@ -300,7 +305,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/400/500',
         name: 'Anthony Di Lorenzo',
-        // shifts: '[Shift]',
+        // shift: shifts[4]._id,
         dob: '1985-03-31',
         address: '15 Faketh Street',
         phone: '656 5139',
@@ -318,7 +323,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/500/400',
         name: 'Daniel Harris',
-        // shifts: '[Shift]',
+        // shift: shifts[4]._id,
         dob: '1982-01-15',
         address: '346 Fakerer Street',
         phone: '995 6854',
@@ -336,7 +341,7 @@ const seedEmployees = async () => {
         employeeType: 'Security',
         profilePic: 'http://placekitten.com/g/500/500',
         name: 'Michael Kauter',
-        // shifts: '[Shift]',
+        // shift: shifts[4]._id,
         dob: '1991-07-18',
         address: '987 Faked Street',
         phone: '500 1034',
@@ -352,6 +357,63 @@ const seedEmployees = async () => {
       }
 
     ]);
+
+    // await shifts[0].updateOne({
+    //   $push: {
+    //     employees: {
+    //       // $each: createdShifts.map( s => s._id)
+    //       _id: createdEmployees[0]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await shifts[1].updateOne({
+    //   $push: {
+    //     employees: {
+    //       // $each: createdShifts.map( s => s._id)
+    //       _id: createdEmployees[1]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await shifts[2].updateOne({
+    //   $push: {
+    //     employees: {
+    //       // $each: createdShifts.map( s => s._id)
+    //       _id: createdEmployees[2]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await shifts[3].updateOne({
+    //   $push: {
+    //     employees: {
+    //       // $each: createdShifts.map( s => s._id)
+    //       _id: createdEmployees[2]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await shifts[4].updateOne({
+    //   $push: {
+    //     employees: {
+    //       // $each: createdShifts.map( s => s._id)
+    //       _id: createdEmployees[3]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // await shifts[5].updateOne({
+    //   $push: {
+    //     employees: {
+    //       // $each: createdShifts.map( s => s._id)
+    //       _id: createdEmployees[4]._id
+    //     }
+    //   }
+    // }); // update
+    //
+    // return createdEmployees;
+
 
   } catch(err) {
     console.log('Error creating employees:', err);
@@ -418,10 +480,112 @@ const seedShifts = async (rosters, employees) => {
     await rosters[0].updateOne({
       $push: {
         shifts: {
-          $each: createdShifts.map( s => s._id)
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[0]._id
         }
       }
     }); // update
+
+    await employees[0].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[0]._id
+        }
+      }
+    }); // update
+
+    await rosters[0].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[1]._id
+        }
+      }
+    }); // update
+
+    await employees[1].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[1]._id
+        }
+      }
+    }); // update
+
+    await rosters[1].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[2]._id
+        }
+      }
+    }); // update
+
+    await employees[2].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[2]._id
+        }
+      }
+    }); // update
+
+    await rosters[1].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[3]._id
+        }
+      }
+    }); // update
+
+    await employees[2].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[3]._id
+        }
+      }
+    }); // update
+
+    await rosters[2].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[4]._id
+        }
+      }
+    }); // update
+
+    await employees[3].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[4]._id
+        }
+      }
+    }); // update
+
+    await rosters[3].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[5]._id
+        }
+      }
+    }); // update
+
+    await employees[4].updateOne({
+      $push: {
+        shifts: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdShifts[5]._id
+        }
+      }
+    }); // update
+
+
 
     return createdShifts;
 
@@ -429,52 +593,166 @@ const seedShifts = async (rosters, employees) => {
       console.warn( 'Error creating shifts:', err );
       process.exit(1);
   }
-  // // Shorthand access to all the rosters & employees:
-  const [r1] = rosters;
-  const [e1, e2, e3] = employees;
-  //
-  // // Create shifts in Employee docs
-  //
-  const e1Updated = await e1.updateOne({
-    shifts: [
-      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
-      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
-    ]
-  });
 
-  const e2Updated = await e2.updateOne({
-    shifts: [
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
-      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', roster: r1._id },
-    ]
-  });
-
-  const e3Updated = await e3.updateOne({
-    shifts: [
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', roster: r1._id },
-    ]
-  });
-
-
-  const r1Updated = await r1.updateOne({ $push: {
-    shifts: [
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-01T18:00:00', employee: e1._id },
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', employee: e1._id },
-      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', employee: e1._id },
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', employee: e2._id },
-      {date: '2020-10-01T10:30:00', clockOnDate: '2020-10-01T18:00:00', employee: e2._id },
-      {date: '2020-10-02T10:30:00', clockOnDate: '2020-10-02T18:00:00', employee: e3._id },
-    ]
-  }});
-
-
-  // We could return the status of all the updates:
-  return [e1Updated, e2Updated, e3Updated, r1Updated];
-  console.log('===========Updated----------',r1);
+  console.log('===========Updated----------',createdShifts);
 
 }; // seedShifts()
 
+const seedRosters = async (venues) => {
+
+  try {
+
+    return await Roster.create([
+      {
+        date: '2020-10-01T10:30:00',
+        venue: venues[0]._id,
+        // shift: shifts[0,1]._id,
+        employeeType: 'Security'
+      },
+      {
+        date: '2020-10-01T12:30:00',
+        venue: venues[1]._id,
+        // shift: shifts[2,3]._id,
+        employeeType: 'Security'
+      },
+      {
+        date: '2020-10-01T16:20:00',
+        venue: venues[2]._id,
+        // shift: shifts[4]._id,
+        employeeType: 'Security'
+      },
+      {
+        date: '2020-10-08T11:21:00',
+        venue: venues[3]._id,
+        // shift: shifts[5]._id,
+        employeeType: 'Cleaning'
+      },
+      {
+        date: '2020-10-08T09:45:00',
+        venue: venues[4]._id,
+        // shift: shifts[0]._id,
+        employeeType: 'Cleaning'
+      },
+      {
+        date: '2020-10-08T10:38:00',
+        venue: venues[1]._id,
+        // shift: shifts[0]._id,
+        employeeType: 'Bar'
+      },
+      {
+        date: '2020-10-08T13:05:00',
+        venue: venues[2]._id,
+        // shift: shifts[0]._id,
+        employeeType: 'Bar'
+      }
+    ]);
+
+    await venue[0].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[0]._id
+        }
+      }
+    }); // update
+
+    await shifts[0,1].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdRosters.map( s => s._id)
+          _id: createdRosters[0]._id
+        }
+      }
+    }); // update
+
+    await venue[1].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[1]._id
+        }
+      }
+    }); // update
+
+    await shifts[2,3].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdRosters.map( s => s._id)
+          _id: createdRosters[1]._id
+        }
+      }
+    }); // update
+
+    await venue[2].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[2]._id
+        }
+      }
+    }); // update
+
+    await shifts[4].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdRosters.map( s => s._id)
+          _id: createdRosters[2]._id
+        }
+      }
+    }); // update
+
+    await venue[3].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[3]._id
+        }
+      }
+    }); // update
+
+    await shifts[5].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdRosters.map( s => s._id)
+          _id: createdRosters[3]._id
+        }
+      }
+    }); // update
+
+    await venue[4].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[4]._id
+        }
+      }
+    }); // update
+
+    await venue[1].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[5]._id
+        }
+      }
+    }); // update
+
+    await venue[2].updateOne({
+      $push: {
+        rosters: {
+          // $each: createdShifts.map( s => s._id)
+          _id: createdRosters[6]._id
+        }
+      }
+    }); // update
+
+    return createdRosters;
+
+  } catch( err ){
+    console.warn( 'Error creating rosters:', err );
+    process.exit(1);
+  }
+}; // seedRosters
 
 const printReport = async () => {
 
@@ -492,7 +770,7 @@ const printReport = async () => {
 console.log('====VENUES====');
   venueCheck.forEach( v => {
     console.log(
-      green, `${v.name}:`, yellow, `${v.address} -> ${v.email}`,
+      green, `${v.name}:`, yellow, `${v.address} -> ${v.email}`, 
       reset,
       // e.shifts.map(r =>({
       //   date: r.date, clockOnDate: r.clockOnDate, employee: r.employee.name
@@ -519,7 +797,7 @@ console.log('====VENUES====');
       reset,
     );
     console.dir(
-      r.shifts.map(s =>({
+      r.shift.map(s =>({
       employeeName: s.employee.name, date: s.date, confirmed: s.shiftConfirmed
     }))
   );
@@ -543,19 +821,19 @@ console.log('====VENUES====');
   });
 
   const shiftCheck = await Shift.find()
-  .populate('roster').populate('employee');
+    // .populate('roster').populate('employee');
     // path: 'shifts.venue', // Mongoose populates this association
     // model: 'Venue'
-  // });
-  console.log('====SHIFTS====');
-  shiftCheck.forEach(s => {
-    console.log(
-      green, `Employee: ${s.employee.name}`, yellow, `Date: ${s.date}`, green, `Confirmed: ${s.shiftConfirmed}`, yellow, `Roster employee type: ${s.roster.employeeType}`,
-      reset,
-  //     s.shifts.map(r => (
-  //       { row: r.row, col: r.col, roster: r.roster.rosterNumber }
-  //     ))
-    );
-  });
+    // });
+    console.log('====SHIFTS====');
+    // shiftCheck.forEach(s => {
+    console.log( shiftCheck );
+      // green, `Employee: ${s.employee.name}`, yellow, `Date: ${s.date}`, green, `Confirmed: ${s.shiftConfirmed}`, yellow, `Roster employee type: ${s.roster.employeeType}`,
+      // reset,
+      //     s.shifts.map(r => (
+      //       { row: r.row, col: r.col, roster: r.roster.rosterNumber }
+      //     ))
+    // );
+    // });
 
 }; // printReport()

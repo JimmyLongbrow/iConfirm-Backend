@@ -80,8 +80,8 @@ const schema = buildSchema(`
       date: String,
       clockOnDate: String,
       clockOffDate: String,
-      employeeId: String,
-      rosterId: String,
+      employee: String,
+      roster: String,
       shiftConfirmed: Boolean
     ): [Shift],
   },
@@ -108,7 +108,7 @@ const schema = buildSchema(`
 
   type Roster {
     date: String,
-    venue: Venue,
+    venues: [Venue],
     shifts: [Shift],
     employeeType: String
   },
@@ -117,7 +117,6 @@ const schema = buildSchema(`
     date: String,
     clockOnDate: String,
     clockOffDate: String,
-    employeeId: String,
     employee: Employee,
     roster: Roster,
     shiftConfirmed: Boolean
@@ -135,7 +134,8 @@ const schema = buildSchema(`
     masterLicNo: String,
     masterLicExp: String,
     masterLicStatus: Boolean,
-    membershipDate: String
+    membershipDate: String,
+    rosters: [Roster],
   }
 `);
 
@@ -148,11 +148,12 @@ const getRoster = (query) => {
 
 }; //getRoster
 
-const getRosters = (query) => {
+const getRosters = async (query) => {
 
   console.log('getRosters()', query);
-
-  return Roster.find( query );
+  const rosters = await Rosters.find( query ).populate( 'venues','shifts' );
+  console.log(rosters);
+  return rosters;
 }; //getRosters
 
 
@@ -166,11 +167,12 @@ const getVenue = (query) => {
 
 }; //getVenue
 
-const getVenues = (query) => {
+const getVenues = async (query) => {
 
   console.log('getVenues()', query);
-
-  return Venue.find( query );
+  const venues = await Venue.find( query ).populate( 'rosters' );
+  console.log(venues);
+  return venues;
 }; //getVenues
 
 
@@ -183,11 +185,11 @@ const getShift = (query) => {
 
 }; //getShift
 
-const getShifts = (query) => {
+const getShifts = async (query) => {
 
-  console.log('getShifts()', query);
+  const shifts = await Shift.find( query ).populate( 'employees','rosters' );
 
-  return Shift.find( query );
+  return shifts;
 }; //getShifts
 
 
@@ -199,11 +201,13 @@ const getEmployee = (query) => {
 
 }; //getEmployee
 
-const getEmployees = (query) => {
+const getEmployees = async (query) => {
 
   console.log('getEmployees()', query);
-  console.log('FIRE');
-  return Employee.find( query );
+  const employees = await Employee.find( query ).populate( 'shifts' );
+  console.log(employees);
+  return employees;
+
 }; //getEmployees
 
 
@@ -248,9 +252,22 @@ app.get('/rosters', (req, res) => {
 
 }); // GET /rosters
 
+//searches over all the list of employess, useful for admin
+app.get('/employees', checkAuth(), (req, res) => {
+  console.log('app.get(employees)');
+
+  try {
+    let employees = Employee.find()
+    res.status(200).send(employees)
+  }
+  catch(e){
+    res.status(404).send(e)
+  }
+})
+
 app.get('/rosters/search/:date/:employeeType', checkAuth(),(req, res) => {
 
-
+// /rosters/search/:id
   db.collection('rosters').find({
     date: req.params.date,
     employeeType: req.params.employeeType
@@ -347,9 +364,26 @@ app.post('/shifts', (req, res) => {
 
 }); // POST /shifts
 
+//this post request is for creating and saving new employees that register.
+app.post('/employee' , (req,res) =>{
+  try{
+    console.log('/employee/post', req.body);
+    const salt = bcrypt.genSaltSync(8); //loops over 8times
+    let passwordDigest = bcrypt.hashSync(req.body.password, salt )
+    // const { email, password } = req.body;
+    console.log('passwordDigest', passwordDigest);
+    let employee = new Employee({...req.body, passwordDigest});
+    employee.save();
+    res.status( 200 ).send(employee._id)
+  }
+  catch(e){
+    console.log( 'e', e );
+    res.status( 404 ).send(e)
+  }
+})
 
-
-// Login form on frontend submits to here (using Ajax)
+// Login form on frontend submits to here (using Ajax). Already registered Employees.
+//Single session view for employees.
 app.post('/login', (req, res) => {
   console.log('posted data:', req.body);
   // res.json( req.body ); // echo back the POSTed formdata

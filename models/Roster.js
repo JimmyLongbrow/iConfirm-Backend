@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const rosterSchema = new mongoose.Schema({
   date: Date,
-  venue: {
+  venue: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Venue'
-  },
-  shifts: [{
+  }],
+  shift: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shift'
   }],
