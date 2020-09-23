@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fee6f3db-692b-446b-9b38-bcaf8f95f496" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/graphql/resolver.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graphql/schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middlewares/authentication.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middlewares/error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middlewares/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/schema.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/managers-seeds.js" beforeDir="false" afterPath="$PROJECT_DIR$/graphql/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1huor1P3BMZrmi8QpINzKENwRrR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="run.prettier.on.save" value="true" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fee6f3db-692b-446b-9b38-bcaf8f95f496" name="Default Changelist" comment="" />
+      <created>1600870533520</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600870533520</updated>
+      <workItem from="1600870534962" duration="7280000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="266" y="23" key="CommitChangelistDialog2" timestamp="1600874050631">
+      <screen x="0" y="23" width="1440" height="827" />
+    </state>
+    <state x="266" y="23" key="CommitChangelistDialog2/0.23.1440.827@0.23.1440.827" timestamp="1600874050631" />
+    <state x="221" y="75" key="SettingsEditor" timestamp="1600872964381">
+      <screen x="0" y="23" width="1440" height="827" />
+    </state>
+    <state x="221" y="75" key="SettingsEditor/0.23.1440.827@0.23.1440.827" timestamp="1600872964381" />
+    <state x="422" y="45" width="596" height="783" key="find.popup" timestamp="1600873706477">
+      <screen x="0" y="23" width="1440" height="827" />
+    </state>
+    <state x="422" y="45" width="596" height="783" key="find.popup/0.23.1440.827@0.23.1440.827" timestamp="1600873706477" />
+    <state x="385" y="198" key="run.anything.popup" timestamp="1600874189749">
+      <screen x="0" y="23" width="1440" height="827" />
+    </state>
+    <state x="385" y="198" key="run.anything.popup/0.23.1440.827@0.23.1440.827" timestamp="1600874189749" />
+  </component>
+</project>

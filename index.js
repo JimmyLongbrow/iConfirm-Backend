@@ -1,19 +1,14 @@
-// DB init
-const mongoose = require('mongoose')
-const Roster = require('./models/Roster');
-const Employee = require('./models/Employee');
-const Venue = require('./models/Venue');
-const Shift = require('./models/Shift');
-mongoose.connect('mongodb://127.0.0.1:27017/iconfirm', {useNewUrlParser: true, useUnifiedTopology: true});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+require("dotenv/config");
 
+const cors = require("cors");
+const express = require("express");
+const mongoose = require("mongoose");
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const jwtAunthenticate = require('express-jwt');
-const SERVER_SECRET_KEY = ('process.env.SERVER_SECRET_KEY');
+const { errorMiddleware } = require("./middlewares");
+const routes = require("./routes");
+const { getPort } = require("./utils");
 
+<<<<<<< HEAD
 
 const checkAuth = () => {
   return jwtAunthenticate({
@@ -378,9 +373,16 @@ app.use('/graphql', checkAuth(), graphqlHTTP({
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT} ...`);
+=======
+mongoose.connect("mongodb://127.0.0.1:27017/iconfirm", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+>>>>>>> 0a2d8dfcb11dc4bc1e94d7b77f0ac03c7ed2cb2e
 });
 
+const app = express();
 
+<<<<<<< HEAD
 app.get('/rosters', (req, res) => {
 
   Roster.find()
@@ -484,4 +486,15 @@ app.use( (err, req, res, next) => {
     console.log('Unauthorized Request:', req.path);
     res.status(401).json({ error: 'Invalid token' });
   }
+=======
+// Middlewares
+app.use(cors()); // Use cors as Express middleware, i.e. set the CORS allow header
+app.use(express.json()); // Enable support for JSON-encoded request bodies (i.e. posted formdata)
+app.use(express.urlencoded({ extended: true }));
+app.use(errorMiddleware);
+app.use(routes);
+
+const listener = app.listen(getPort(), () => {
+  console.log(`Listening at http://localhost:${listener.address().port} ...`);
+>>>>>>> 0a2d8dfcb11dc4bc1e94d7b77f0ac03c7ed2cb2e
 });
