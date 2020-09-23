@@ -13,7 +13,7 @@ const venueSchema = new mongoose.Schema({
   masterLicExp: Date,
   masterLicStatus: Boolean,
   membershipDate: Date,
-  roster: [{
+  rosters: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Roster'
   }]

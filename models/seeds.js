@@ -602,17 +602,17 @@ const seedRosters = async (venues) => {
 
   try {
 
-    return await Roster.create([
+    const createdRosters = await Roster.create([
       {
         date: '2020-10-01T10:30:00',
         venue: venues[0]._id,
-        // shift: shifts[0,1]._id,
+        // shift: shifts[0]._id,
         employeeType: 'Security'
       },
       {
         date: '2020-10-01T12:30:00',
         venue: venues[1]._id,
-        // shift: shifts[2,3]._id,
+        // shift: shifts[2]._id,
         employeeType: 'Security'
       },
       {
@@ -645,9 +645,9 @@ const seedRosters = async (venues) => {
         // shift: shifts[0]._id,
         employeeType: 'Bar'
       }
-    ]);
+    ]); // end of create Rosters
 
-    await venue[0].updateOne({
+    await venues[0].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -656,16 +656,9 @@ const seedRosters = async (venues) => {
       }
     }); // update
 
-    await shifts[0,1].updateOne({
-      $push: {
-        rosters: {
-          // $each: createdRosters.map( s => s._id)
-          _id: createdRosters[0]._id
-        }
-      }
-    }); // update
 
-    await venue[1].updateOne({
+
+    await venues[1].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -674,16 +667,9 @@ const seedRosters = async (venues) => {
       }
     }); // update
 
-    await shifts[2,3].updateOne({
-      $push: {
-        rosters: {
-          // $each: createdRosters.map( s => s._id)
-          _id: createdRosters[1]._id
-        }
-      }
-    }); // update
 
-    await venue[2].updateOne({
+
+    await venues[2].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -692,16 +678,9 @@ const seedRosters = async (venues) => {
       }
     }); // update
 
-    await shifts[4].updateOne({
-      $push: {
-        rosters: {
-          // $each: createdRosters.map( s => s._id)
-          _id: createdRosters[2]._id
-        }
-      }
-    }); // update
 
-    await venue[3].updateOne({
+
+    await venues[3].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -710,16 +689,9 @@ const seedRosters = async (venues) => {
       }
     }); // update
 
-    await shifts[5].updateOne({
-      $push: {
-        rosters: {
-          // $each: createdRosters.map( s => s._id)
-          _id: createdRosters[3]._id
-        }
-      }
-    }); // update
 
-    await venue[4].updateOne({
+
+    await venues[4].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -728,7 +700,7 @@ const seedRosters = async (venues) => {
       }
     }); // update
 
-    await venue[1].updateOne({
+    await venues[1].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -737,7 +709,7 @@ const seedRosters = async (venues) => {
       }
     }); // update
 
-    await venue[2].updateOne({
+    await venues[2].updateOne({
       $push: {
         rosters: {
           // $each: createdShifts.map( s => s._id)
@@ -763,6 +735,7 @@ const printReport = async () => {
     reset = '\x1b[0m';
 
   const venueCheck = await Venue.find()
+  .populate('rosters')
   // .populate({
   //   path: 'shifts.employee', // Mongoose populates this association
   //   // model: 'Employee'
@@ -770,8 +743,11 @@ const printReport = async () => {
 console.log('====VENUES====');
   venueCheck.forEach( v => {
     console.log(
-      green, `${v.name}:`, yellow, `${v.address} -> ${v.email}`, 
+      green, `${v.name}:`, yellow, `${v.address} -> ${v.email}`,
       reset,
+      v.rosters.map(r =>({
+        date: r.date, employeeType: r.employeeType
+      }))
       // e.shifts.map(r =>({
       //   date: r.date, clockOnDate: r.clockOnDate, employee: r.employee.name
       // }))
@@ -793,12 +769,12 @@ console.log('====VENUES====');
   console.log('====ROSTERS====');
   rosterCheck.forEach( r => {
     console.log(
-      green, `Type: ${r.employeeType}:`, yellow, `Venue: ${r.venue.name}`,
+      green, `${r._id} Type: ${r.employeeType}:`, yellow, `Venue: ${r.venue.name}`,
       reset,
     );
     console.dir(
-      r.shift.map(s =>({
-      employeeName: s.employee.name, date: s.date, confirmed: s.shiftConfirmed
+      r.shifts.map(s =>({
+      "employee.name": s.employee.name, date: s.date, shiftConfirmed: s.shiftConfirmed
     }))
   );
   });

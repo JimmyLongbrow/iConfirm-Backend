@@ -10,19 +10,17 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 
 const bcrypt = require('bcrypt');
-
 const jwt = require('jsonwebtoken');
-
 const jwtAunthenticate = require('express-jwt');
-
 const SERVER_SECRET_KEY = ('process.env.SERVER_SECRET_KEY');
+
+
 const checkAuth = () => {
   return jwtAunthenticate({
     secret: SERVER_SECRET_KEY,
     algorithms: ['HS256']
   });
 };
-
 
 
 const express = require('express');
@@ -108,7 +106,7 @@ const schema = buildSchema(`
 
   type Roster {
     date: String,
-    venues: [Venue],
+    venue: Venue,
     shifts: [Shift],
     employeeType: String
   },
@@ -144,18 +142,17 @@ const getRoster = (query) => {
 
   console.log('getRoster()', query);
 
-  return Roster.findOne({ _id: query.id });
+  return Roster.findOne({ _id: query.id }).populate( 'shifts').populate( 'venue' );
 
 }; //getRoster
 
 const getRosters = async (query) => {
 
   console.log('getRosters()', query);
-  const rosters = await Rosters.find( query ).populate( 'venues','shifts' );
+  const rosters = await Roster.find( query ).populate( 'venue' ).populate( 'shifts');
   console.log(rosters);
   return rosters;
 }; //getRosters
-
 
 
 
@@ -170,7 +167,16 @@ const getVenue = (query) => {
 const getVenues = async (query) => {
 
   console.log('getVenues()', query);
-  const venues = await Venue.find( query ).populate( 'rosters' );
+  const venues = await Venue.find( query ).populate( {
+    path: 'rosters',
+    populate: {
+      path: 'shifts',
+      populate: {
+        path: 'employee'
+      }
+    }
+
+  });
   console.log(venues);
   return venues;
 }; //getVenues
@@ -187,10 +193,12 @@ const getShift = (query) => {
 
 const getShifts = async (query) => {
 
-  const shifts = await Shift.find( query ).populate( 'employees','rosters' );
+  const shifts = await Shift.find( query ).populate( 'employees').populate('rosters');
 
   return shifts;
 }; //getShifts
+
+
 
 
 const getEmployee = (query) => {
@@ -209,7 +217,6 @@ const getEmployees = async (query) => {
   return employees;
 
 }; //getEmployees
-
 
 
 
@@ -264,105 +271,6 @@ app.get('/employees', checkAuth(), (req, res) => {
     res.status(404).send(e)
   }
 })
-
-app.get('/rosters/search/:date/:employeeType', checkAuth(),(req, res) => {
-
-// /rosters/search/:id
-  db.collection('rosters').find({
-    date: req.params.date,
-    employeeType: req.params.employeeType
-  })
-  .toArray( (err, results) => {
-
-    if( err ){
-      res.sendStatus(500);
-      return console.log('Error searching rosters:', err);
-    }
-
-    res.json( results );
-
-  });
-
-}); // get /rosters/search/:date/:employeeType
-
-
-
-app.get('/rosters/:venueId', (req, res) => {
-
-  db.collection('rosters').findOne(
-    { venueId: req.params.venueId },
-    (err, roster) => {
-
-      if( err ){
-        res.sendStatus(500);
-        return console.log('Error finding roster', err);
-      }
-
-      res.json( roster );
-
-    } // query callback
-  );
-
-}); // GET /rosters/:venueId
-
-
-
-
-app.post('/shifts', (req, res) => {
-  // res.json( req.body );
-
-// TODO: implement the damn employee auth is manager/admin
-  const FAKE_USER_ID = 10;
-
-  console.log('POST /shifts', req.body);
-
-  db.collection('rosters').updateOne(
-    // 1. Query to find the document you want to update:
-    { _id: ObjectId(req.body.rosterId) },
-
-    // 2. Specify the changes to make, i.e. the update data:
-    {
-      $push: {
-        shifts: {
-          date: req.body.date,
-          shiftConfirmed: req.body.shiftConfirmed,
-          clockOnDate: req.body.clockOnDate,
-          clockOffDate: req.body.clockOffDate,
-          employeeId: FAKE_USER_ID,
-          rosterId: req.body.rosterId
-        }
-      } // $push
-    }, // update arg
-
-    // 3. Callback to run when the update is finished:
-    (err, result) => {
-
-      if( err ){
-        res.sendStatus( 500 );
-        return console.log('Error saving shifts', err);
-      }
-
-      // Need to send back the kind of data the
-      // ReservationConfirm component is expecting,
-      // so it will actually update the seating diagram
-      // correctly:
-
-      console.log('update done:', result);
-
-      res.json({
-        date: req.body.date,
-        shiftConfirmed: req.body.shiftConfirmed,
-        clockOnDate: req.body.clockOnDate,
-        clockOffDate: req.body.clockOffDate,
-        employeeId: FAKE_USER_ID,
-        rosterId: req.body.rosterId
-      });
-
-    }
-
-  );
-
-}); // POST /shifts
 
 //this post request is for creating and saving new employees that register.
 app.post('/employee' , (req,res) =>{
@@ -430,11 +338,6 @@ app.post('/login', (req, res) => {
 
 }); // POST /login
 
-// Check authentication for this route, i.e. logged-in employees only
-app.get('/login', checkAuth(), (req, res) => {
-  res.json({ seekrit: 'Welcome to Manager Section', employee: req.employee });
-});
-
 // Define an error handler function for express to use
 // whenever there is an authentication error
 app.use( (err, req, res, next) => {
@@ -443,9 +346,3 @@ app.use( (err, req, res, next) => {
     res.status(401).json({ error: 'Invalid token' });
   }
 });
-
-
-// TEST using curl:
-// curl -XPOST -d '{"email":"one@one.com", "password":"chicken"}' http://localhost:1337/login -H 'content-type: application/json'
-
-// How to mark certain routes as logged-in only?
