@@ -220,7 +220,6 @@ const getEmployees = async (query) => {
 
 
 
-
 const rootResolver = {
   roster: getRoster,
   rosters: getRosters,
@@ -339,18 +338,11 @@ app.post('/login', (req, res) => {
 }); // POST /login
 
 app.get('/login', checkAuth(), (req, res) => {
-  console.log('app.get(employees)');
-
-  try {
-    let employees = Employee.find()
-    res.status(200).send(employees)
-  }
-  catch(e){
-    res.status(404).send(e)
-  }
-})
+  res.json({ seekrit: 'Welcome to Manager Section', employee: req.employee });
+});
 // Define an error handler function for express to use
 // whenever there is an authentication error
+
 app.use( (err, req, res, next) => {
   if( err.name === 'UnauthorizedError' ){
     console.log('Unauthorized Request:', req.path);
