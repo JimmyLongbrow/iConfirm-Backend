@@ -121,6 +121,8 @@ module.exports = buildSchema(`
 
     upsertRoster(
       date: String,
+      venue: String,
+      shift: String,
       employeeType: String
     ): Roster
 
@@ -132,7 +134,8 @@ module.exports = buildSchema(`
       date: String,
       clockOnDate: String,
       clockOffDate: String,
-      roster: Roster,
+      roster: String,
+      employee: String,
       shiftConfirmed: Boolean
     ): Shift
 
