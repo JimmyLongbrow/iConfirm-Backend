@@ -2,7 +2,7 @@ const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
   type Query {
-    authenticatedEmployee: Employee,
+
 
     employee(email: String): Employee,
 
