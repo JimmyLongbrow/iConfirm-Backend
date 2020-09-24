@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fee6f3db-692b-446b-9b38-bcaf8f95f496" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/graphql/resolver.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/graphql/schema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middlewares/authentication.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middlewares/error.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middlewares/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schema.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/managers-seeds.js" beforeDir="false" afterPath="$PROJECT_DIR$/graphql/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,25 +49,47 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600870533520</updated>
-      <workItem from="1600870534962" duration="7280000" />
+      <workItem from="1600870534962" duration="16680000" />
     </task>
+    <task id="LOCAL-00001" summary="Merging backend with all mutation preparation">
+      <created>1600922797925</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1600922797927</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Merging backend with all mutation preparation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merging backend with all mutation preparation" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="266" y="23" key="CommitChangelistDialog2" timestamp="1600874050631">
-      <screen x="0" y="23" width="1440" height="827" />
+    <state x="2075" y="23" width="2142" height="1033" key="CommitChangelistDialog2" timestamp="1600922797671">
+      <screen x="1440" y="23" width="3440" height="1417" />
     </state>
     <state x="266" y="23" key="CommitChangelistDialog2/0.23.1440.827@0.23.1440.827" timestamp="1600874050631" />
+    <state x="2075" y="23" width="2142" height="1033" key="CommitChangelistDialog2/0.23.1440.828/1440.23.3440.1417@1440.23.3440.1417" timestamp="1600922797671" />
+    <state x="3486" y="436" key="MultipleFileMergeDialog" timestamp="1600922888222">
+      <screen x="1440" y="23" width="3440" height="1417" />
+    </state>
+    <state x="3486" y="436" key="MultipleFileMergeDialog/0.23.1440.828/1440.23.3440.1417@1440.23.3440.1417" timestamp="1600922888222" />
     <state x="221" y="75" key="SettingsEditor" timestamp="1600872964381">
       <screen x="0" y="23" width="1440" height="827" />
     </state>
     <state x="221" y="75" key="SettingsEditor/0.23.1440.827@0.23.1440.827" timestamp="1600872964381" />
+    <state x="3450" y="411" key="Vcs.Push.Dialog.v2" timestamp="1600922918605">
+      <screen x="1440" y="23" width="3440" height="1417" />
+    </state>
+    <state x="3450" y="411" key="Vcs.Push.Dialog.v2/0.23.1440.828/1440.23.3440.1417@1440.23.3440.1417" timestamp="1600922918605" />
+    <state x="3683" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1600903565016">
+      <screen x="1440" y="23" width="3440" height="1417" />
+    </state>
+    <state x="3683" y="595" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1440.828/1440.23.3440.1417@1440.23.3440.1417" timestamp="1600903565016" />
     <state x="422" y="45" width="596" height="783" key="find.popup" timestamp="1600873706477">
       <screen x="0" y="23" width="1440" height="827" />
     </state>
