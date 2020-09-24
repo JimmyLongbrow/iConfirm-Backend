@@ -6,7 +6,15 @@ const getRoster = async ({ id }) =>
 const getRosters = async (query) =>
   Roster.find(query).populate("venue").populate("shifts");
 
-const getVenue = async ({ id }) => Venue.findOne({ _id: id });
+const getVenue = async ({ id }) => Venue.findOne({ _id: id }).populate({
+  path: "rosters",
+  populate: {
+    path: "shifts",
+    populate: {
+      path: "employees",
+    },
+  },
+});
 
 const getVenues = async (query) => {
   const venues = await Venue.find(query).populate({
@@ -83,8 +91,13 @@ const deleteVenue = async ({ _id }) => {
   return {};
 };
 
-const upsertVenue = async (query) =>
-  Venue.update({ _id: query._id }, query, { upsert: true });
+const upsertVenue = async (query) =>{
+  console.log("Upsert Venue:", query);
+// const result = await Venue.updateOne({ _id: query._id }, query, { upsert: true });
+const result = await Venue.create(query);
+console.log("Result:", result);
+return result
+};
 ////////////////////////////////////////////////////////////////////
 
 module.exports = {

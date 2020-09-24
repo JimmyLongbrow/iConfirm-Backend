@@ -2,7 +2,7 @@ const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
   type Query {
-    authenticatedEmployee: Employee,
+
 
     employee(email: String): Employee,
 
@@ -91,7 +91,7 @@ module.exports = buildSchema(`
     masterLicStatus: Boolean,
     membershipDate: String,
     rosters: [Roster],
-  }
+  },
 
   type Mutation {
     deleteEmployee(
@@ -156,7 +156,7 @@ module.exports = buildSchema(`
       masterLicNo: String,
       masterLicExp: String,
       masterLicStatus: Boolean,
-      membershipDate: String,
+      membershipDate: String
     ): Venue
-  }
+  },
 `);

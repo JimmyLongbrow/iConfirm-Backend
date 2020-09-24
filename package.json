@@ -22,7 +22,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "twilio": "^3.49.3"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
