@@ -26,6 +26,7 @@ module.exports = buildSchema(`
     rosters(
       date: String,
       venue: String,
+      shifts: String,
       employeeType: String
     ): [Roster],
 
@@ -158,5 +159,4 @@ module.exports = buildSchema(`
       membershipDate: String,
     ): Venue
   }
-
 `);
