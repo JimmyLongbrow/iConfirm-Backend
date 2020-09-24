@@ -10,6 +10,14 @@ const { getSecretKey } = require("../utils");
 
 const router = Router();
 
+function loggingMiddleware(req, res, next) {
+  if (req.url.startsWith('/graphql')) {
+    console.log('GRAPHQL REQUEST: ', req.body);
+  }
+  next();
+}
+router.use(loggingMiddleware);
+
 router.use(
   "/graphql",
   // authenticationMiddleware(),
@@ -17,6 +25,12 @@ router.use(
     schema: schema,
     rootValue: resolver,
     graphiql: true,
+    customFormatErrorFn: (error) => ({
+      message: error.message,
+      locations: error.locations,
+      stack: error.stack ? error.stack.split('\n') : [],
+      path: error.path,
+    })
   })
 );
 
