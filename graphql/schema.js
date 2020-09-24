@@ -91,7 +91,7 @@ module.exports = buildSchema(`
     masterLicStatus: Boolean,
     membershipDate: String,
     rosters: [Roster],
-  }
+  },
 
   type Mutation {
     deleteEmployee(
@@ -156,7 +156,7 @@ module.exports = buildSchema(`
       masterLicNo: String,
       masterLicExp: String,
       masterLicStatus: Boolean,
-      membershipDate: String,
+      membershipDate: String
     ): Venue
-  }
+  },
 `);

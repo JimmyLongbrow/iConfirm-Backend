@@ -83,8 +83,13 @@ const deleteVenue = async ({ _id }) => {
   return {};
 };
 
-const upsertVenue = async (query) =>
-  Venue.update({ _id: query._id }, query, { upsert: true });
+const upsertVenue = async (query) =>{
+  console.log("Upsert Venue:", query);
+// const result = await Venue.updateOne({ _id: query._id }, query, { upsert: true });
+const result = await Venue.create(query);
+console.log("Result:", result);
+return result
+};
 ////////////////////////////////////////////////////////////////////
 
 module.exports = {
