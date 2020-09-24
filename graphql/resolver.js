@@ -43,6 +43,39 @@ const getAuthenticatedEmployee = async (query, req) => {
   });
 };
 
+const deleteRoster = async ({ _id }) => {
+  console.log(arguments);
+  await Roster.deleteOne({ _id });
+
+  return {};
+};
+
+const upsertRoster = async (query) =>
+  Roster.update({ _id: query._id }, query, { upsert: true });
+
+///////////////////////////////////////////////////////////////
+const deleteShift = async ({ _id }) => {
+  console.log(arguments);
+  await Shift.deleteOne({ _id });
+
+  return {};
+};
+
+const upsertShift = async (query) =>
+  Shift.update({ _id: query._id }, query, { upsert: true });
+////////////////////////////////////////////////////////////////
+
+const deleteEmployee = async ({ _id }) => {
+  console.log(arguments);
+  await Employee.deleteOne({ _id });
+
+  return {};
+};
+
+const upsertEmployee = async (query) =>
+  Employee.update({ _id: query._id }, query, { upsert: true });
+
+///////////////////////////////////////////////////////////////////
 const deleteVenue = async ({ _id }) => {
   console.log(arguments);
   await Venue.deleteOne({ _id });
@@ -52,6 +85,7 @@ const deleteVenue = async ({ _id }) => {
 
 const upsertVenue = async (query) =>
   Venue.update({ _id: query._id }, query, { upsert: true });
+////////////////////////////////////////////////////////////////////
 
 module.exports = {
   roster: getRoster,
@@ -65,4 +99,10 @@ module.exports = {
   authenticatedEmployee: getAuthenticatedEmployee,
   upsertVenue: upsertVenue,
   deleteVenue: deleteVenue,
+  upsertEmployee: upsertEmployee,
+  deleteEmployee: deleteEmployee,
+  upsertRoster: upsertRoster,
+  deleteRoster: deleteRoster,
+  upsertShift: upsertShift,
+  deleteShift: deleteShift,
 };

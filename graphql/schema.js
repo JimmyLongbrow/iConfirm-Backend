@@ -40,6 +40,7 @@ module.exports = buildSchema(`
     ): [Shift],
   },
 
+
   type Mutation {
     deleteVenue(
         _id: String
@@ -60,6 +61,61 @@ module.exports = buildSchema(`
       masterLicStatus: Boolean,
       membershipDate: String
     ): Venue
+  },
+  
+  
+  type Mutation {
+    deleteEmployee(
+        email: String
+    ): Employee
+    
+     upsertEmployee(
+       employeeType: String,
+       profilePic: String,
+       name: String,
+       shifts: [Shift],
+       dob: String,
+       address: String,
+       phone: String,
+       email: String,
+       passwordDigest: String,
+       emergencyContactName: String,
+       emergencyContactPhone: String,
+       securityLicNo: String,
+       securityLicStatus: Boolean,
+       rsaNo: String,
+       rsaLicStatus: Boolean,
+       firstAidExp: String
+     ): Employee
+  },
+
+
+  type Mutation {
+    deleteRoster(
+        _id: String
+    ): Roster
+    
+     upsertRoster(
+       date: String,
+       venue: String,
+       employeeType: String
+     ): Roster
+  },
+  
+  
+  type Mutation {
+    deleteShift(
+        _id: String
+    ): Shift
+    
+     upsertShift(
+       date: String,
+       clockOnDate: String,
+       clockOffDate: String,
+       employee: String,
+       roster: String,
+       shiftConfirmed: Boolean
+     ): Shift
   },
 
 
@@ -99,7 +155,7 @@ module.exports = buildSchema(`
   },
 
   type Venue {
-      _id: String,
+    _id: String,
     logo: String,
     name: String,
     address: String,
