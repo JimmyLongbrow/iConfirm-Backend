@@ -14,7 +14,7 @@ const getVenues = async (query) => {
     populate: {
       path: "shifts",
       populate: {
-        path: "employee",
+        path: "employees",
       },
     },
   });
@@ -95,7 +95,7 @@ module.exports = {
   shift: getShift,
   shifts: getShifts,
   employee: getEmployee,
-  // employees: getEmployees,
+  employees: getEmployees,
   authenticatedEmployee: getAuthenticatedEmployee,
   upsertVenue: upsertVenue,
   deleteVenue: deleteVenue,
