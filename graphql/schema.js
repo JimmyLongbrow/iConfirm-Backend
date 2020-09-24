@@ -40,39 +40,6 @@ module.exports = buildSchema(`
     ): [Shift],
   },
 
-  type Venue {
-    _id: String,
-    logo: String,
-    name: String,
-    address: String,
-    phone: String,
-    email: String,
-    licenseeName: String,
-    liquorLicNo: String,
-    liquorLicStatus: Boolean,
-    masterLicNo: String,
-    masterLicExp: String,
-    masterLicStatus: Boolean,
-    membershipDate: String,
-    rosters: [Roster],
-  },
-
-  type Roster {
-    date: String,
-    venue: Venue,
-    shifts: [Shift],
-    employeeType: String
-  },
-
-  type Shift {
-    date: String,
-    clockOnDate: String,
-    clockOffDate: String,
-    employee: Employee,
-    roster: Roster,
-    shiftConfirmed: Boolean
-  },
-
   type Employee {
     employeeType: String,
     profilePic: String,
@@ -91,6 +58,39 @@ module.exports = buildSchema(`
     rsaLicStatus: Boolean,
     firstAidExp: String
   },
+
+  type Shift {
+    date: String,
+    clockOnDate: String,
+    clockOffDate: String,
+    employee: Employee,
+    roster: Roster,
+    shiftConfirmed: Boolean
+  },
+
+  type Roster {
+    date: String,
+    venue: Venue,
+    shifts: [Shift],
+    employeeType: String
+  },
+
+  type Venue {
+    _id: String,
+    logo: String,
+    name: String,
+    address: String,
+    phone: String,
+    email: String,
+    licenseeName: String,
+    liquorLicNo: String,
+    liquorLicStatus: Boolean,
+    masterLicNo: String,
+    masterLicExp: String,
+    masterLicStatus: Boolean,
+    membershipDate: String,
+    rosters: [Roster],
+  }
 
   type Mutation {
     deleteEmployee(
@@ -144,20 +144,19 @@ module.exports = buildSchema(`
     ): Venue
 
     upsertVenue(
-      _id: String,
       logo: String,
       name: String,
       address: String,
       phone: String,
       email: String,
-      licenseename: String,
-      liquorlicno: String,
-      liquorlicstatus: Boolean,
-      masterlicno: String,
-      masterlicexp: String,
-      masterlicstatus: Boolean,
-      membershipdate: String
+      licenseeName: String,
+      liquorLicNo: String,
+      liquorLicStatus: Boolean,
+      masterLicNo: String,
+      masterLicExp: String,
+      masterLicStatus: Boolean,
+      membershipDate: String,
     ): Venue
-  },
+  }
 
 `);
