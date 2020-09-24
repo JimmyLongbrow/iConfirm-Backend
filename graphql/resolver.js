@@ -6,7 +6,15 @@ const getRoster = async ({ id }) =>
 const getRosters = async (query) =>
   Roster.find(query).populate("venue").populate("shifts");
 
-const getVenue = async ({ id }) => Venue.findOne({ _id: id });
+const getVenue = async ({ id }) => Venue.findOne({ _id: id }).populate({
+  path: "rosters",
+  populate: {
+    path: "shifts",
+    populate: {
+      path: "employees",
+    },
+  },
+});
 
 const getVenues = async (query) => {
   const venues = await Venue.find(query).populate({
