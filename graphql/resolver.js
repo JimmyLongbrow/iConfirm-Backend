@@ -11,7 +11,7 @@ const getVenue = async ({ id }) => Venue.findOne({ _id: id }).populate({
   populate: {
     path: "shifts",
     populate: {
-      path: "employees",
+      path: "employee",
     },
   },
 });
