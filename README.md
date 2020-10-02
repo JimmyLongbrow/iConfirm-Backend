@@ -1,10 +1,10 @@
 # iConfirm-Backend
 Version 1.0.1 - Thu 23 Dec 2020
 
-# by Nemo Petrovic & Jamil Samarani
+by Nemo Petrovic & Jamil Samarani
 https://github.com/JimmyLongbrow/iConfirm-Backend
 
-# Frontend Location : https://github.com/jamsec12ty/iconfirm-frontend
+Frontend Location : https://github.com/jamsec12ty/iconfirm-frontend
 
 # Introduction
 iConfirm is a MERN with Mongoose/GraphQL/Apollo Full-Stack Rostering App that allows Business Managers to Roster their staff accordingly. Once the roster is completed the Business Manager can push sms notification to the Employee via Twilio and request the shift to be confirmed or declined. Depending on the reply of the Employee , the shift will appear Green(confirmed), Red (declined) or Neutral ( to be confirmed ).
