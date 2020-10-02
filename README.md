@@ -12,7 +12,7 @@ iConfirm is a MERN with Mongoose/GraphQL/Apollo Full-Stack Rostering App that al
 iConfirm: Rostering App
 
 Installation and Requirements
-TBA, currently fixing a few bugs befor Heroku Deployment.
+TBA, currently fixing a few bugs before Heroku Deployment.
 
 
 Project Description
